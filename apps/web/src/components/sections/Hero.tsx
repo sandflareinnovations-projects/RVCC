@@ -62,8 +62,8 @@ export const Hero = () => {
                 fill
                 priority={idx === 0}
                 className={cn(
-                  "object-cover transition-transform duration-[2000ms]",
-                  isActive && "animate-ken-burns"
+                  "object-cover transition-transform duration-[5000ms] ease-linear",
+                  isActive ? "scale-110" : "scale-100"
                 )}
               />
               <div className="absolute inset-0 bg-black/20" />
