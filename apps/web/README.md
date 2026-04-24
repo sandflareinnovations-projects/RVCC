@@ -21,6 +21,14 @@ The project follows a **Component-Based Architecture** with the following struct
 - **Icons**: [Lucide React](https://lucide.dev)
 - **Animation**: [Framer Motion](https://framer.com/motion) (Recommended)
 
+## 💎 Quality Standards
+
+This application adheres to the global monorepo standards defined in the root [README](../../README.md):
+
+- **ESLint**: Extends `@repo/eslint-config/next-js`.
+- **Prettier**: Automatic Tailwind class sorting and import organization.
+- **Git Hooks**: Pre-commit validation via Husky.
+
 ## 🛠 Getting Started
 
 1. **Install dependencies**:
