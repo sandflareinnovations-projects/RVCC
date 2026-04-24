@@ -81,7 +81,7 @@ export const AnimatedThemeToggler = ({
         void toggleTheme();
       }}
       className={cn(
-        "border-border text-foreground flex h-12 w-12 items-center justify-center rounded-full border transition-all hover:border-[#0073bc] hover:bg-[#0073bc] hover:text-white",
+        "border-brand-blue bg-background text-brand-blue flex h-12 w-12 items-center justify-center rounded-full border transition-all hover:border-[#0073bc] hover:bg-[#0073bc] hover:text-white",
         className
       )}
       {...props}

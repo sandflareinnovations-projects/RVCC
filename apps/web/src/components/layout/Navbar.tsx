@@ -77,11 +77,11 @@ export const Navbar = () => {
         </div>
 
         {/* Menu Header */}
-        <div className="relative z-10 flex items-center justify-between px-4 py-6">
+        <div className="relative z-10 flex items-center justify-between p-4">
           <Image src="/images/logo/logo.png" alt="Logo" width={120} height={40} className="w-32" />
           <button
             onClick={() => setIsOpen(false)}
-            className="border-border text-foreground flex h-12 w-12 items-center justify-center rounded-full border transition-colors hover:border-[#0073bc] hover:bg-[#0073bc] hover:text-white"
+            className="border-brand-blue bg-background text-brand-blue hover:bg-brand-blue flex h-12 w-12 items-center justify-center rounded-full border transition-all hover:text-white"
           >
             <Icons.Close className="h-6 w-6" />
           </button>
@@ -111,13 +111,13 @@ export const Navbar = () => {
             <a
               key={i}
               href={social.href}
-              className="border-border text-foreground flex h-12 w-12 items-center justify-center rounded-full border transition-all hover:border-[#0073bc] hover:bg-[#0073bc] hover:text-white"
+              className="border-brand-blue text-brand-blue bg-background hover:bg-brand-blue flex h-12 w-12 items-center justify-center rounded-full border transition-all hover:text-white"
             >
               {social.icon}
             </a>
           ))}
           <AnimatedThemeToggler />
-          <button className="border-border text-foreground flex h-12 w-12 items-center justify-center rounded-full border text-xs font-bold transition-all hover:border-[#0073bc] hover:bg-[#0073bc] hover:text-white">
+          <button className="border-brand-blue text-brand-blue bg-background hover:bg-brand-blue flex h-12 w-12 items-center justify-center rounded-full border text-xs font-bold transition-all hover:text-white">
             AR
           </button>
         </div>
