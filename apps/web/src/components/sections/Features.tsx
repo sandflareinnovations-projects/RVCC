@@ -1,5 +1,5 @@
-import { client } from "@/lib/sanity/client";
-import { GET_FEATURES_QUERY } from "@/lib/sanity/queries";
+// import { client } from "@/lib/sanity/client";
+// import { GET_FEATURES_QUERY } from "@/lib/sanity/queries";
 import { Feature } from "@/types";
 import { FeatureCard } from "./FeatureCard";
 

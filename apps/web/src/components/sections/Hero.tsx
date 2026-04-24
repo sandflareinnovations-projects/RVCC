@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/Button";
-import { client } from "@/lib/sanity/client";
-import { GET_HERO_QUERY } from "@/lib/sanity/queries";
+// import { client } from "@/lib/sanity/client";
+// import { GET_HERO_QUERY } from "@/lib/sanity/queries";
 
 export const Hero = async () => {
   // In a real scenario:

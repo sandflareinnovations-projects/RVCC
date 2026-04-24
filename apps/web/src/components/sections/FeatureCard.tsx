@@ -1,6 +1,5 @@
 import { Feature } from "@/types";
 import * as Icons from "lucide-react";
-import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 interface FeatureCardProps {
