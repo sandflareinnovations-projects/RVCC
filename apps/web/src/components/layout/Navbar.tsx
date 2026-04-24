@@ -14,8 +14,6 @@ import { Button } from "@ui/Button";
 
 import { cn } from "@lib/utils";
 
-import { HeroClipPath } from "../ui/LayoutMask";
-
 export const Navbar = () => {
   const { resolvedTheme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
@@ -28,14 +26,14 @@ export const Navbar = () => {
         {/* Nav Box - Left */}
         <button
           onClick={() => setIsOpen(true)}
-          className="group bg-background hover:bg-foreground hover:text-background border-border relative z-50 flex items-center space-x-3 rounded-full border px-6 py-2 transition-all"
+          className="group bg-background hover:bg-foreground hover:text-background border-border text-brand-blue relative z-50 flex items-center space-x-3 rounded-full border px-6 py-2 transition-all"
         >
           <Icons.Menu className="h-4 w-4" />
           <span className="text-xs font-bold tracking-widest uppercase">Menu</span>
         </button>
 
         {/* Logo - Center */}
-        <Link href="/" className="absolute bottom-3 left-1/2 z-50 -translate-x-1/2">
+        <Link href="/" className="absolute bottom-4 left-1/2 z-50 -translate-x-1/2">
           <Image
             src="/images/logo/logo.png"
             alt="Logo"
@@ -47,7 +45,7 @@ export const Navbar = () => {
 
         {/* Actions - Right */}
         <div className="relative z-50 flex items-center space-x-4">
-          <Button href="#contact" className="bg-brand-blue h-10 w-[140px] text-white">
+          <Button href="#contact" className="h-10 w-[140px] bg-white text-[#0073bc]">
             Get started
           </Button>
         </div>
@@ -83,7 +81,7 @@ export const Navbar = () => {
           <Image src="/images/logo/logo.png" alt="Logo" width={120} height={40} className="w-32" />
           <button
             onClick={() => setIsOpen(false)}
-            className="border-border hover:bg-foreground hover:text-background flex h-12 w-12 items-center justify-center rounded-full border transition-colors"
+            className="border-border text-foreground flex h-12 w-12 items-center justify-center rounded-full border transition-colors hover:border-[#0073bc] hover:bg-[#0073bc] hover:text-white"
           >
             <Icons.Close className="h-6 w-6" />
           </button>
@@ -113,13 +111,13 @@ export const Navbar = () => {
             <a
               key={i}
               href={social.href}
-              className="border-border hover:bg-brand-blue flex h-12 w-12 items-center justify-center rounded-full border transition-all hover:text-white"
+              className="border-border text-foreground flex h-12 w-12 items-center justify-center rounded-full border transition-all hover:border-[#0073bc] hover:bg-[#0073bc] hover:text-white"
             >
               {social.icon}
             </a>
           ))}
           <AnimatedThemeToggler />
-          <button className="border-border hover:bg-foreground hover:text-background flex h-12 w-12 items-center justify-center rounded-full border text-xs font-bold transition-all">
+          <button className="border-border text-foreground flex h-12 w-12 items-center justify-center rounded-full border text-xs font-bold transition-all hover:border-[#0073bc] hover:bg-[#0073bc] hover:text-white">
             AR
           </button>
         </div>

@@ -69,7 +69,7 @@ export const AnimatedThemeToggler = ({
 
   // Prevent hydration mismatch by returning placeholder on server
   if (!mounted) {
-    return <div className={cn("h-10 w-10", className)} />;
+    return <div className={cn("h-12 w-12", className)} />;
   }
 
   return (
@@ -80,13 +80,16 @@ export const AnimatedThemeToggler = ({
       onClick={() => {
         void toggleTheme();
       }}
-      className={cn("hover:bg-muted relative rounded-full p-2 transition-colors", className)}
+      className={cn(
+        "border-border text-foreground flex h-12 w-12 items-center justify-center rounded-full border transition-all hover:border-[#0073bc] hover:bg-[#0073bc] hover:text-white",
+        className
+      )}
       {...props}
     >
       {resolvedTheme === "dark" ? (
-        <Icons.Sun className="text-foreground h-5 w-5" />
+        <Icons.Sun className="h-5 w-5" />
       ) : (
-        <Icons.Moon className="text-foreground h-5 w-5" />
+        <Icons.Moon className="h-5 w-5" />
       )}
       <span className="sr-only">Toggle theme</span>
     </button>
