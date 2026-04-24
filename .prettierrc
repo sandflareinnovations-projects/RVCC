@@ -5,7 +5,20 @@
   "trailingComma": "es5",
   "printWidth": 100,
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
-  "importOrder": ["^@/(.*)$", "^[./]"],
+  "importOrder": [
+    "^react$",
+    "^next/(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "^@repo/(.*)$",
+    "^@/(.*)$",
+    "^@components/(.*)$",
+    "^@ui/(.*)$",
+    "^@sections/(.*)$",
+    "^@layout/(.*)$",
+    "^@lib/(.*)$",
+    "^@types/(.*)$",
+    "^[./]"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }
