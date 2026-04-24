@@ -150,9 +150,12 @@
     line-height: 1.2;
   }
 
-  .slogan {
+  .font-heading {
     font-family: var(--font-heading);
-    text-transform: uppercase;
+  }
+
+  .font-heading.italic {
+    font-style: italic;
   }
 }
 
@@ -189,5 +192,21 @@
 
   ::view-transition-new(root) {
     z-index: 2147483647;
+  }
+
+  @keyframes ken-burns {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animate-ken-burns {
+    animation: ken-burns 15s ease-in-out infinite;
   }
 }

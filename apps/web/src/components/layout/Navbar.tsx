@@ -1,40 +1,129 @@
 "use client";
 
+import { useState } from "react";
+
+import Image from "next/image";
 import Link from "next/link";
 
 import { useTheme } from "next-themes";
 
+import { Icons } from "@repo/ui";
+
 import { AnimatedThemeToggler } from "@ui/AnimatedThemeToggler";
 import { Button } from "@ui/Button";
 
+import { cn } from "@lib/utils";
+
+import { HeroClipPath } from "../ui/LayoutMask";
+
 export const Navbar = () => {
-  const { resolvedTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const menuLinks = ["ABOUT US", "SERVICES", "PROJECTS", "GALLERY", "CAREERS", "CONTACTS"];
+
   return (
-    <header className="bg-background/80 fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-md">
-      <nav className="container flex h-20 items-center justify-between">
-        <Link href="/" className="text-brand-blue text-2xl font-black">
-          RVCC
+    <header className="fixed top-0 right-0 left-0 z-[100] bg-transparent py-4">
+      <div className="relative container flex items-center justify-between">
+        {/* Nav Box - Left */}
+        <button
+          onClick={() => setIsOpen(true)}
+          className="group bg-background hover:bg-foreground hover:text-background border-border relative z-50 flex items-center space-x-3 rounded-full border px-6 py-2 transition-all"
+        >
+          <Icons.Menu className="h-4 w-4" />
+          <span className="text-xs font-bold tracking-widest uppercase">Menu</span>
+        </button>
+
+        {/* Logo - Center */}
+        <Link href="/" className="absolute bottom-3 left-1/2 z-50 -translate-x-1/2">
+          <Image
+            src="/images/logo/logo.png"
+            alt="Logo"
+            width={200}
+            height={200}
+            className={cn("w-25")}
+          />
         </Link>
 
-        <div className="flex items-center space-x-8">
-          <Link
-            href="#services"
-            className="hover:text-brand-blue text-sm font-medium transition-colors"
-          >
-            Services
-          </Link>
-          <Link
-            href="#projects"
-            className="hover:text-brand-blue text-sm font-medium transition-colors"
-          >
-            Projects
-          </Link>
-          <div className="border-border flex items-center space-x-4 border-l pl-8">
-            <AnimatedThemeToggler />
-            <Button href="#contact">Get Started</Button>
-          </div>
+        {/* Actions - Right */}
+        <div className="relative z-50 flex items-center space-x-4">
+          <Button href="#contact" className="bg-brand-blue h-10 w-[140px] text-white">
+            Get started
+          </Button>
         </div>
-      </nav>
+      </div>
+
+      {/* Centered Menu Modal */}
+      <div
+        className={cn(
+          "bg-background fixed top-1/2 left-1/2 z-[200] flex h-[95vh] w-[calc(100%-2rem)] max-w-[500px] -translate-x-1/2 flex-col rounded-[3rem] p-6 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.85,0,0.15,1)]",
+          isOpen ? "-translate-y-1/2 opacity-100" : "translate-y-[100vh] opacity-0"
+        )}
+      >
+        {/* Subtle Background Pattern (SVG Curves) */}
+        <div className="pointer-events-none absolute inset-0 z-0 opacity-10">
+          <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path
+              d="M100 0 C 80 20, 90 80, 50 100"
+              stroke="currentColor"
+              fill="none"
+              strokeWidth="0.1"
+            />
+            <path
+              d="M100 20 C 70 40, 80 90, 40 100"
+              stroke="currentColor"
+              fill="none"
+              strokeWidth="0.1"
+            />
+          </svg>
+        </div>
+
+        {/* Menu Header */}
+        <div className="relative z-10 flex items-center justify-between px-4 py-6">
+          <Image src="/images/logo/logo.png" alt="Logo" width={120} height={40} className="w-32" />
+          <button
+            onClick={() => setIsOpen(false)}
+            className="border-border hover:bg-foreground hover:text-background flex h-12 w-12 items-center justify-center rounded-full border transition-colors"
+          >
+            <Icons.Close className="h-6 w-6" />
+          </button>
+        </div>
+
+        {/* Menu Links */}
+        <nav className="relative z-10 flex flex-1 flex-col items-center justify-center space-y-4">
+          {menuLinks.map((link) => (
+            <Link
+              key={link}
+              href={`#${link.toLowerCase().replace(" ", "-")}`}
+              onClick={() => setIsOpen(false)}
+              className="font-heading text-brand-blue text-4xl transition-transform hover:scale-105 md:text-5xl"
+            >
+              {link}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Menu Footer (Socials & Theme) */}
+        <div className="relative z-10 flex items-center justify-center space-x-6 py-10">
+          {[
+            { icon: <Icons.Linkedin className="h-5 w-5" />, href: "#" },
+            { icon: <Icons.Instagram className="h-5 w-5" />, href: "#" },
+            { icon: <Icons.Facebook className="h-5 w-5" />, href: "#" },
+          ].map((social, i) => (
+            <a
+              key={i}
+              href={social.href}
+              className="border-border hover:bg-brand-blue flex h-12 w-12 items-center justify-center rounded-full border transition-all hover:text-white"
+            >
+              {social.icon}
+            </a>
+          ))}
+          <AnimatedThemeToggler />
+          <button className="border-border hover:bg-foreground hover:text-background flex h-12 w-12 items-center justify-center rounded-full border text-xs font-bold transition-all">
+            AR
+          </button>
+        </div>
+      </div>
     </header>
   );
 };
