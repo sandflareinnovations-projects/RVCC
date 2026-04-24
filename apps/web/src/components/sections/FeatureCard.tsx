@@ -1,6 +1,7 @@
-import { Feature } from "@/types";
 import * as Icons from "lucide-react";
 import { twMerge } from "tailwind-merge";
+
+import { Feature } from "@/types";
 
 interface FeatureCardProps {
   feature: Feature;
@@ -8,7 +9,8 @@ interface FeatureCardProps {
 }
 
 export const FeatureCard = ({ feature, className }: FeatureCardProps) => {
-  const Icon = (Icons[feature.icon as keyof typeof Icons] || Icons.CheckCircle) as React.ElementType;
+  const Icon = (Icons[feature.icon as keyof typeof Icons] ||
+    Icons.CheckCircle) as React.ElementType;
 
   return (
     <div
@@ -18,7 +20,7 @@ export const FeatureCard = ({ feature, className }: FeatureCardProps) => {
       )}
     >
       <div className="absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-amber-500/5 blur-2xl transition-all group-hover:bg-amber-500/10" />
-      
+
       <div className="relative mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 transition-colors group-hover:bg-amber-500 group-hover:text-white dark:bg-amber-500/20 dark:text-amber-400">
         <Icon size={24} />
       </div>
@@ -26,10 +28,8 @@ export const FeatureCard = ({ feature, className }: FeatureCardProps) => {
       <h3 className="relative mb-3 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
         {feature.title}
       </h3>
-      
-      <p className="relative text-zinc-600 dark:text-zinc-400">
-        {feature.description}
-      </p>
+
+      <p className="relative text-zinc-600 dark:text-zinc-400">{feature.description}</p>
     </div>
   );
 };

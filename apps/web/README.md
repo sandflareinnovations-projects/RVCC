@@ -24,18 +24,21 @@ The project follows a **Component-Based Architecture** with the following struct
 ## 🛠 Getting Started
 
 1. **Install dependencies**:
+
    ```bash
    pnpm install
    ```
 
 2. **Setup Environment**:
    Create a `.env.local` file:
+
    ```env
    NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
    NEXT_PUBLIC_SANITY_DATASET=production
    ```
 
 3. **Run Development Server**:
+
    ```bash
    pnpm dev
    ```
