@@ -30,4 +30,21 @@ export const nextJsConfig = [
       },
     },
   },
+  {
+    // Specific boundaries for Atomic UI components
+    files: ["**/components/ui/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/components/sections/*"],
+              message: "Atomic UI components must not import from page sections.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ];
