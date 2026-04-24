@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RVCC Construction - Web Portal
 
-## Getting Started
+A premium, high-performance web application for RVCC Construction Company, built with Next.js 16 and Sanity Headless CMS.
 
-First, run the development server:
+## 🏗 Architecture
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The project follows a **Component-Based Architecture** with the following structure:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `src/app`: Routing, global layout, and styles.
+- `src/components/layout`: Global components like Navbar and Footer.
+- `src/components/sections`: Page-level sections (Hero, Features, etc.).
+- `src/components/ui`: Reusable atomic UI components.
+- `src/lib`: Core utilities and CMS configuration.
+- `src/types`: Centralized TypeScript definitions.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: [Next.js](https://nextjs.org) (App Router)
+- **CMS**: [Sanity.io](https://sanity.io)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com)
+- **Icons**: [Lucide React](https://lucide.dev)
+- **Animation**: [Framer Motion](https://framer.com/motion) (Recommended)
 
-## Learn More
+## 🛠 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+1. **Install dependencies**:
+   ```bash
+   pnpm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Setup Environment**:
+   Create a `.env.local` file:
+   ```env
+   NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+   NEXT_PUBLIC_SANITY_DATASET=production
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Run Development Server**:
+   ```bash
+   pnpm dev
+   ```
 
-## Deploy on Vercel
+4. **Build for Production**:
+   ```bash
+   pnpm build
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+&copy; 2026 RVCC Construction Company. All rights reserved.
