@@ -25,11 +25,20 @@ const MOCK_FEATURES: Feature[] = [
 
 export const Features = async () => {
   return (
-    <section className="container py-24">
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-        {MOCK_FEATURES.map((feature) => (
-          <FeatureCard key={feature._id} feature={feature} />
-        ))}
+    <section className="bg-background py-section" id="services">
+      <div className="container">
+        <div className="mb-20 text-center">
+          <p className="slogan text-brand-blue mb-4 text-xs tracking-[0.4em]">Core Capabilities</p>
+          <h2 className="text-h2 font-black tracking-tighter md:text-5xl">
+            Shaping Your <span className="text-brand-blue">Vision</span>.
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {MOCK_FEATURES.map((feature) => (
+            <FeatureCard key={feature._id} feature={feature} />
+          ))}
+        </div>
       </div>
     </section>
   );
