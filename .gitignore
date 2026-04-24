@@ -54,6 +54,7 @@ desktop.ini
 
 # TypeScript
 *.tsbuildinfo
+next-env.d.ts
 
 # Debugging
 .map
