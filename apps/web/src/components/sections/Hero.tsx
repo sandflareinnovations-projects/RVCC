@@ -7,7 +7,7 @@ export const Hero = async () => {
         <p className="slogan animate-fade-in text-brand-blue mb-4 text-sm tracking-[0.3em]">
           WHERE IDEAS ARE SHAPED TO REALITY
         </p>
-        <h1 className="animate-slide-up text-display leading-[1.1] font-black tracking-tighter md:text-7xl lg:text-8xl">
+        <h1 className="animate-slide-up text-display leading-[1.1] font-black md:text-7xl lg:text-8xl">
           Engineering <span className="text-brand-blue">Excellence</span>.
         </h1>
         <p className="animate-fade-in text-muted mx-auto mt-8 max-w-2xl text-lg md:text-xl">

@@ -136,8 +136,6 @@
   h5,
   h6 {
     font-family: var(--font-heading);
-    font-weight: 700;
-    letter-spacing: 0.05em;
     line-height: 1.2;
   }
 

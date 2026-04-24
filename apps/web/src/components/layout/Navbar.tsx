@@ -12,7 +12,7 @@ export const Navbar = () => {
   return (
     <header className="bg-background/80 fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-md">
       <nav className="container flex h-20 items-center justify-between">
-        <Link href="/" className="text-brand-blue text-2xl font-black tracking-tighter">
+        <Link href="/" className="text-brand-blue text-2xl font-black">
           RVCC
         </Link>
 

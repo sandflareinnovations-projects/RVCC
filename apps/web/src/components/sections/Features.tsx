@@ -29,7 +29,7 @@ export const Features = async () => {
       <div className="container">
         <div className="mb-20 text-center">
           <p className="slogan text-brand-blue mb-4 text-xs tracking-[0.4em]">Core Capabilities</p>
-          <h2 className="text-h2 font-black tracking-tighter md:text-5xl">
+          <h2 className="text-h2 font-black md:text-5xl">
             Shaping Your <span className="text-brand-blue">Vision</span>.
           </h2>
         </div>
