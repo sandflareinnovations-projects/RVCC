@@ -25,7 +25,8 @@
       "@sections/*": ["./src/components/sections/*"],
       "@layout/*": ["./src/components/layout/*"],
       "@lib/*": ["./src/lib/*"],
-      "@types/*": ["./src/types/*"]
+      "@types/*": ["./src/types/*"],
+      "@types": ["./src/types"]
     }
   },
   "include": [
