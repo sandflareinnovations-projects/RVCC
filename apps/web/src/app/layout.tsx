@@ -1,25 +1,17 @@
-import { Geist, Geist_Mono } from "next/font/google";
-
 import type { Metadata } from "next";
+
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 import { Footer } from "@layout/Footer";
 import { Navbar } from "@layout/Navbar";
 
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Project Name | Professional Web Application",
-  description: "A high-performance web application built with Next.js and modular architecture.",
+  title: "RVCC | WHERE IDEAS ARE SHAPED TO REALITY",
+  description:
+    "A forward-thinking brand focused on engineering, design, and manufacturing. RVCC: Delivering precision and excellence in every project.",
+  keywords: ["Engineering", "Design", "Manufacturing", "RVCC", "Shaping Reality"],
 };
 
 export default function RootLayout({
@@ -28,11 +20,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+      <body className="font-primary flex min-h-full flex-col">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
