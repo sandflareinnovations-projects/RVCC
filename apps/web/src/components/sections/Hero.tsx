@@ -15,16 +15,10 @@ export const Hero = async () => {
           high-quality manufacturing.
         </p>
         <div className="animate-fade-in mt-12 flex justify-center space-x-6">
-          <Button
-            href="#projects"
-            className="bg-brand-blue shadow-brand-blue/20 text-white shadow-xl transition-transform hover:scale-105"
-          >
+          <Button href="#projects" className="shadow-xl transition-transform hover:scale-105">
             Our Portfolio
           </Button>
-          <Button
-            href="#about"
-            className="border-brand-grey text-foreground hover:bg-foreground hover:text-background transition-all"
-          >
+          <Button href="#about" className="transition-all">
             Learn More
           </Button>
         </div>

@@ -31,9 +31,7 @@ export const Navbar = () => {
           </Link>
           <div className="border-border flex items-center space-x-4 border-l pl-8">
             <AnimatedThemeToggler />
-            <Button href="#contact" className="bg-brand-blue hover:bg-brand-blue/90 text-white">
-              Get Started
-            </Button>
+            <Button href="#contact">Get Started</Button>
           </div>
         </div>
       </nav>
