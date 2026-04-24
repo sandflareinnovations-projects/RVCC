@@ -25,6 +25,5 @@
     "turbo": "latest",
     "typescript-eslint": "^8.59.0"
   },
-  "packageManager": "pnpm@10.18.3",
   "packageManager": "pnpm@10.18.3"
 }
