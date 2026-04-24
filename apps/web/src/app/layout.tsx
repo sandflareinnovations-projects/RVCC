@@ -18,9 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RVCC Construction Company | Building the Future",
-  description:
-    "Delivering premium commercial and residential construction services. Built with precision and engineered for durability.",
+  title: "Project Name | Professional Web Application",
+  description: "A high-performance web application built with Next.js and modular architecture.",
 };
 
 export default function RootLayout({

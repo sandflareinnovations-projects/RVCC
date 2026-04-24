@@ -7,7 +7,7 @@ export const Navbar = () => {
     <header className="border-b bg-white">
       <nav className="container flex h-16 items-center justify-between">
         <Link href="/" className="text-xl font-bold">
-          RVCC
+          Logo
         </Link>
 
         <div className="flex items-center space-x-6">

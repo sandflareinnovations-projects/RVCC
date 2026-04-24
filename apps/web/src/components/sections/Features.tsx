@@ -5,20 +5,20 @@ import { FeatureCard } from "./FeatureCard";
 const MOCK_FEATURES: Feature[] = [
   {
     _id: "1",
-    title: "Engineering",
-    description: "Structural integrity and precision engineering for every project.",
+    title: "Feature One",
+    description: "A brief description of what this feature or service provides to the user.",
     icon: "Activity",
   },
   {
     _id: "2",
-    title: "Sustainability",
-    description: "Eco-friendly materials and energy-efficient building practices.",
+    title: "Feature Two",
+    description: "Another brief description highlighting a key benefit or functionality.",
     icon: "Leaf",
   },
   {
     _id: "3",
-    title: "Scale",
-    description: "Handling complex high-rises and large-scale commercial builds.",
+    title: "Feature Three",
+    description: "Third description to round out the features section of the landing page.",
     icon: "Layers",
   },
 ];
