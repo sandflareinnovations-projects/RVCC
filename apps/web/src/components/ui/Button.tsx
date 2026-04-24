@@ -20,20 +20,20 @@ export const Button = ({ children, className, href, onClick }: ButtonProps) => {
       href={href}
       onClick={onClick}
       className={cn(
-        "group relative inline-flex h-12 items-center overflow-hidden rounded-full bg-foreground p-0.5 transition-transform",
+        "group relative inline-flex h-12 items-center overflow-hidden rounded-full bg-foreground p-0.5 transition-transform w-[180px]",
         className
       )}
     >
       {/* Dynamic Section */}
-      <div className="flex h-full items-center justify-center rounded-full bg-background px-6">
-        <span className="font-primary text-sm font-black tracking-tight text-foreground">
+      <div className="flex h-full w-80 items-center justify-center rounded-full bg-background px-6 transition-all duration-500 ease-in-out group-hover:w-full">
+        <span className="font-primary text-sm font-black tracking-tight text-foreground whitespace-nowrap">
           {children}
         </span>
       </div>
 
       {/* Icon Section */}
-      <div className="flex h-full px-1 items-center justify-center text-background">
-        <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+      <div className="flex h-full w-10 items-center justify-center text-background transition-all duration-300 ease-in-out group-hover:w-0 group-hover:opacity-0 overflow-hidden">
+        <ChevronRight className="h-5 w-5 flex-shrink-0" />
       </div>
     </Component>
   );
