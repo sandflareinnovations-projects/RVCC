@@ -20,19 +20,19 @@ export const Button = ({ children, className, href, onClick }: ButtonProps) => {
       href={href}
       onClick={onClick}
       className={cn(
-        "group relative inline-flex h-12 items-center overflow-hidden rounded-full bg-brand-black p-0.5 transition-transform active:scale-95",
+        "group relative inline-flex h-12 items-center overflow-hidden rounded-full bg-brand-black p-0.5 transition-transform",
         className
       )}
     >
       {/* White Section */}
-      <div className="flex h-full items-center justify-center rounded-full border border-brand-black bg-brand-white px-10 transition-colors group-hover:bg-zinc-50">
+      <div className="flex h-full items-center justify-center rounded-full bg-brand-white px-6">
         <span className="font-primary text-sm font-black tracking-tight text-brand-black">
           {children}
         </span>
       </div>
 
       {/* Icon Section */}
-      <div className="flex h-full w-12 items-center justify-center text-brand-white">
+      <div className="flex h-full px-1 items-center justify-center text-brand-white">
         <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
       </div>
     </Component>
