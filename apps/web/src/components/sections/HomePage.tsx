@@ -1,5 +1,5 @@
-import { Hero } from "@/widgets/Hero/ui/Hero";
-import { Features } from "@/widgets/Features/ui/Features";
+import { Hero } from "./Hero";
+import { Features } from "./Features";
 
 export const HomePage = () => {
   return (
@@ -11,9 +11,6 @@ export const HomePage = () => {
       <Hero />
       <Features />
 
-      <footer className="absolute bottom-8 w-full text-center text-xs text-zinc-600">
-        &copy; {new Date().getFullYear()} RVCC Construction Company. All rights reserved.
-      </footer>
     </div>
   );
 };
