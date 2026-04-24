@@ -27,23 +27,18 @@ export const Button = ({
       href={href}
       onClick={onClick}
       className={cn(
-        "group relative inline-flex h-12 items-center overflow-hidden rounded-full p-0.5 transition-transform",
-        transparent ? "border border-white/30 bg-white/20" : "bg-foreground",
-        "w-[180px]",
-        className
+        "group bg-brand-blue text-foreground relative inline-flex h-12 w-[180px] items-center overflow-hidden rounded-full p-0.5 transition-transform"
       )}
     >
       {/* Dynamic Section */}
       <div
         className={cn(
-          "flex h-full w-80 items-center justify-center rounded-full px-6 transition-all duration-500 ease-in-out group-hover:w-full",
-          transparent ? "bg-transparent" : "bg-background"
+          "bg-background flex h-full w-80 items-center justify-center rounded-full px-6 transition-all duration-500 ease-in-out group-hover:w-full"
         )}
       >
         <span
           className={cn(
-            "font-primary text-sm font-black tracking-tight",
-            transparent ? "text-white" : "text-foreground",
+            "font-primary text-brand-blue text-sm font-black tracking-tight",
             "whitespace-nowrap"
           )}
         >
@@ -54,8 +49,7 @@ export const Button = ({
       {/* Icon Section */}
       <div
         className={cn(
-          "flex h-full w-20 items-center justify-center overflow-hidden transition-all duration-300 ease-in-out group-hover:w-0 group-hover:opacity-0",
-          transparent ? "text-white" : "text-background"
+          "text-background flex h-full w-20 items-center justify-center overflow-hidden transition-all duration-300 ease-in-out group-hover:w-0 group-hover:opacity-0"
         )}
       >
         <Icons.ChevronRight className="h-5 w-5 flex-shrink-0" />
