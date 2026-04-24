@@ -1,7 +1,6 @@
+import { Feature } from "@types";
 import * as Icons from "lucide-react";
 import { twMerge } from "tailwind-merge";
-
-import { Feature } from "@/types";
 
 interface FeatureCardProps {
   feature: Feature;
