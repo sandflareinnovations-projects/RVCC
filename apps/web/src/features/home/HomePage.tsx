@@ -1,6 +1,7 @@
 import { AboutUs } from "./AboutUs";
 import { Hero } from "./Hero";
 import { MajorProject } from "./MajorProject";
+import { OurWorks } from "./OurWorks";
 import { RecentProjects } from "./RecentProjects";
 import { Services } from "./Services";
 
@@ -16,6 +17,7 @@ export const HomePage = () => {
       <Services />
       <MajorProject />
       <RecentProjects />
+      <OurWorks />
     </div>
   );
 };

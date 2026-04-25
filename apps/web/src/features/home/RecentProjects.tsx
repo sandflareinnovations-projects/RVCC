@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+
+import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/Button";
 
@@ -94,13 +98,19 @@ export const RecentProjects = () => {
                   fill
                   className="object-cover transition-transform duration-700 hover:scale-105"
                 />
+                <motion.div
+                  initial={{ height: "100%" }}
+                  whileInView={{ height: "0%" }}
+                  viewport={{ once: false }}
+                  transition={{ duration: 0.8, ease: "easeInOut", delay: index * 0.2 }}
+                  className="absolute bottom-0 left-0 z-10 w-full bg-white"
+                />
               </div>
               <div className="flex flex-col gap-2 px-1">
-                <div className="flex items-center gap-3 text-sm font-semibold tracking-wide text-gray-800">
-                  <span className="h-1 w-1 rounded-full bg-black" />
+                <div className="font-heading text-brand-blue flex items-center gap-3 text-3xl font-semibold tracking-wide">
                   <span>{project.title}</span>
                 </div>
-                <p className="pl-4 text-sm leading-relaxed text-gray-600">{project.description}</p>
+                <p className="text-md leading-relaxed text-gray-600">{project.description}</p>
               </div>
             </div>
           ))}

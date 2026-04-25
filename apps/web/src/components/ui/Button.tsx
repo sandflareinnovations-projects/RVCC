@@ -27,7 +27,7 @@ export const Button = ({
       href={href}
       onClick={onClick}
       className={cn(
-        "group bg-brand-blue text-foreground relative inline-flex h-12 w-[180px] items-center overflow-hidden rounded-full p-0.5 transition-transform"
+        "group bg-brand-blue text-foreground border-background relative inline-flex h-12 w-[180px] items-center overflow-hidden rounded-full border-2 p-0.5 transition-transform"
       )}
     >
       {/* Dynamic Section */}
