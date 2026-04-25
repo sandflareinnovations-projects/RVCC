@@ -47,41 +47,43 @@ export const Navbar = () => {
   const menuLinks = ["ABOUT US", "SERVICES", "PROJECTS", "GALLERY", "CAREERS", "CONTACTS"];
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 right-0 left-0 z-[100] transition-all duration-500 ease-in-out",
-        isScrolled ? "bg-background py-2 shadow-sm" : "bg-transparent py-4",
-        isVisible ? "translate-y-0" : "-translate-y-full"
-      )}
-    >
-      <div className="relative container flex items-center justify-between">
-        {/* Nav Box - Left */}
-        <button
-          onClick={() => setIsOpen(true)}
-          className="group bg-background hover:bg-foreground hover:text-background border-border text-brand-blue relative z-50 flex items-center space-x-3 rounded-full border px-6 py-2 transition-all"
-        >
-          <Icons.Menu className="h-4 w-4" />
-          <span className="text-xs font-bold tracking-widest uppercase">Menu</span>
-        </button>
+    <>
+      <header
+        className={cn(
+          "fixed top-0 right-0 left-0 z-[100] transition-all duration-500 ease-in-out",
+          isScrolled ? "bg-background py-2 shadow-sm" : "bg-transparent py-4",
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        )}
+      >
+        <div className="relative container flex items-center justify-between">
+          {/* Nav Box - Left */}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="group bg-background hover:bg-foreground hover:text-background border-border text-brand-blue relative z-50 flex items-center space-x-3 rounded-full border px-6 py-2 transition-all"
+          >
+            <Icons.Menu className="h-4 w-4" />
+            <span className="text-xs font-bold tracking-widest uppercase">Menu</span>
+          </button>
 
-        {/* Logo - Center */}
-        <Link href="/" className="absolute bottom-4 left-1/2 z-50 -translate-x-1/2">
-          <Image
-            src="/images/logo/logo.png"
-            alt="Logo"
-            width={200}
-            height={200}
-            className={cn("w-25")}
-          />
-        </Link>
+          {/* Logo - Center */}
+          <Link href="/" className="absolute bottom-4 left-1/2 z-50 -translate-x-1/2">
+            <Image
+              src="/images/logo/logo.png"
+              alt="Logo"
+              width={200}
+              height={200}
+              className={cn("w-25")}
+            />
+          </Link>
 
-        {/* Actions - Right */}
-        <div className="relative z-50 flex items-center space-x-4">
-          <Button href="#contact" className="h-8 w-[120px] bg-white text-sm text-[#0073bc]">
-            Get started
-          </Button>
+          {/* Actions - Right */}
+          <div className="relative z-50 flex items-center space-x-4">
+            <Button href="#contact" className="h-8 w-[120px] bg-white text-sm text-[#0073bc]">
+              Get started
+            </Button>
+          </div>
         </div>
-      </div>
+      </header>
 
       {/* Centered Menu Modal */}
       <div
@@ -154,6 +156,6 @@ export const Navbar = () => {
           </button>
         </div>
       </div>
-    </header>
+    </>
   );
 };
