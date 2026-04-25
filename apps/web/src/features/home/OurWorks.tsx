@@ -142,19 +142,19 @@ export const OurWorks = () => {
           borderBottomLeftRadius: radius,
           borderBottomRightRadius: radius,
         }}
-        className="bg-brand-blue relative z-20 mx-auto flex flex-col items-center overflow-hidden"
+        className="relative z-20 mx-auto flex flex-col items-center overflow-hidden bg-gray-50"
       >
         <div className="flex min-h-full w-screen flex-col items-center px-6 py-24 md:px-20 md:py-32">
           <div className="flex w-full max-w-7xl flex-col items-center space-y-16">
             <div className="mb-20 flex w-full flex-col items-start justify-between gap-8 md:flex-row md:items-center">
               <div className="flex-1">
-                <h2 className="text-background flex flex-col text-[4rem] leading-[0.6] tracking-tighter md:text-[5.5rem]">
+                <h2 className="text-brand-blue flex flex-col text-[4rem] leading-[0.6] tracking-tighter md:text-[5.5rem]">
                   <span className="font-medium">Our Works</span>
                 </h2>
               </div>
 
               <div className="max-w-sm flex-1 pt-4">
-                <p className="text-background text-center text-sm leading-relaxed font-medium">
+                <p className="text-center text-sm leading-relaxed font-medium text-gray-600">
                   After completing your year 12 education and earning the necessary scores, you may
                   apply for a bachelor&apos;s degree in architecture. To qualify, students can
                   complete one of three entrance exams:
