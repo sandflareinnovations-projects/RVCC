@@ -90,9 +90,7 @@ export const Services = () => {
           {SERVICES_DATA.map((service, index) => (
             <div
               key={service.id}
-              className={`flex flex-col items-center gap-12 border-b border-gray-200 py-16 ${
-                index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-              }`}
+              className="flex flex-col items-center gap-12 border-b border-gray-200 py-16 md:flex-row"
             >
               {/* Text Content */}
               <div className="flex flex-1 flex-col items-start gap-6">
