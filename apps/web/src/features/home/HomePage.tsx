@@ -1,6 +1,8 @@
 import { AboutUs } from "./AboutUs";
 import { Hero } from "./Hero";
+import { MajorProject } from "./MajorProject";
 import { RecentProjects } from "./RecentProjects";
+import { Services } from "./Services";
 
 export const HomePage = () => {
   return (
@@ -11,6 +13,8 @@ export const HomePage = () => {
 
       <Hero />
       <AboutUs />
+      <Services />
+      <MajorProject />
       <RecentProjects />
     </div>
   );
