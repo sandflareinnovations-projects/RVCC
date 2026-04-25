@@ -85,7 +85,7 @@ export const RecentProjects = () => {
           {PROJECTS.map((project, index) => (
             <div key={index} className="flex flex-col gap-5">
               <div
-                className="relative aspect-square w-full overflow-hidden bg-gray-100"
+                className="relative aspect-[3.5/4] w-full overflow-hidden rounded-2xl bg-gray-100"
                 style={{ clipPath: "url(#project-mask)" }}
               >
                 <Image
