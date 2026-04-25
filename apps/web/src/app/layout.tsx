@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { LenisProvider } from "@/components/providers/LenisProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 import { Footer } from "@layout/Footer";
@@ -28,9 +29,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-          <Footer />
+          <LenisProvider>
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </LenisProvider>
         </ThemeProvider>
       </body>
     </html>
