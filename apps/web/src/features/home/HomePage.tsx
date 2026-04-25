@@ -1,5 +1,6 @@
 import { AboutUs } from "./AboutUs";
 import { Hero } from "./Hero";
+import { RecentProjects } from "./RecentProjects";
 
 export const HomePage = () => {
   return (
@@ -10,6 +11,7 @@ export const HomePage = () => {
 
       <Hero />
       <AboutUs />
+      <RecentProjects />
     </div>
   );
 };
