@@ -12,7 +12,7 @@
   font-family: "Maven Pro";
   src: url("/fonts/Maven_Pro/MavenPro-Regular.ttf") format("truetype");
   font-weight: 400;
-  font-style: normal;
+  font-style: thin;
   font-display: swap;
 }
 
@@ -28,7 +28,7 @@
   font-family: "Maven Pro";
   src: url("/fonts/Maven_Pro/MavenPro-Bold.ttf") format("truetype");
   font-weight: 700;
-  font-style: normal;
+  font-style: bold;
   font-display: swap;
 }
 
@@ -36,7 +36,7 @@
   font-family: "Maven Pro";
   src: url("/fonts/Maven_Pro/MavenPro-Black.ttf") format("truetype");
   font-weight: 900;
-  font-style: normal;
+  font-style: extrabold;
   font-display: swap;
 }
 
@@ -128,8 +128,10 @@
 
   html {
     /* Hide scrollbar for IE, Edge and Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 
   body {

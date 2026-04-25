@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -17,11 +17,27 @@ import { cn } from "@lib/utils";
 export const Navbar = () => {
   const { resolvedTheme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Check initial state
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const menuLinks = ["ABOUT US", "SERVICES", "PROJECTS", "GALLERY", "CAREERS", "CONTACTS"];
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-[100] bg-transparent py-4">
+    <header
+      className={cn(
+        "fixed top-0 right-0 left-0 z-[100] transition-all duration-300",
+        isScrolled ? "bg-background py-2 shadow-sm" : "bg-transparent py-4"
+      )}
+    >
       <div className="relative container flex items-center justify-between">
         {/* Nav Box - Left */}
         <button
@@ -45,7 +61,7 @@ export const Navbar = () => {
 
         {/* Actions - Right */}
         <div className="relative z-50 flex items-center space-x-4">
-          <Button href="#contact" className="h-10 w-[140px] bg-white text-[#0073bc]">
+          <Button href="#contact" className="h-8 w-[120px] bg-white text-sm text-[#0073bc]">
             Get started
           </Button>
         </div>

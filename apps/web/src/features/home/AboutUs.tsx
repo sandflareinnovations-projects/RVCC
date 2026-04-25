@@ -4,8 +4,18 @@ import { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 
-import { MotionValue, motion, useScroll, useTransform } from "framer-motion";
+import {
+  MotionValue,
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useTheme } from "next-themes";
+
+import { cn } from "@lib/utils";
 
 const WORDS = [
   "WE",
@@ -41,6 +51,43 @@ const WORDS = [
   "[img3]",
   "LIVING",
 ];
+
+const STATS = [
+  { value: 20, label: "Years of Trust" },
+  { value: 300, label: "PROJECTS COMPLETED" },
+  { value: 30, label: "ONGOING PROJECTS" },
+  { value: 20, label: "SATISFIED CLIENTS" },
+];
+
+const Counter = ({ from = 0, to }: { from?: number; to: number }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const count = useMotionValue(from);
+  const rounded = useTransform(count, (latest) => Math.round(latest) + "+");
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    if (inView) {
+      animate(count, to, {
+        duration: 2.5,
+        ease: [0.16, 1, 0.3, 1], // Smooth cubic-bezier easeOut
+        onComplete: () => setIsComplete(true),
+      });
+    }
+  }, [inView, count, to]);
+
+  return (
+    <motion.span
+      ref={ref}
+      className={cn(
+        "tabular-nums",
+        isComplete ? "text-brand-blue transition-colors duration-700" : "text-foreground"
+      )}
+    >
+      {rounded}
+    </motion.span>
+  );
+};
 
 const Word = ({
   children,
@@ -84,7 +131,7 @@ export const AboutUs = () => {
         {/* Header */}
         <div className="mb-20 flex items-end justify-between">
           <div className="flex flex-col">
-            <h2 className="text-brand-blue text-[14rem] leading-[0.8] tracking-tighter">
+            <h2 className="text-brand-blue/80 text-[14rem] leading-[0.8] tracking-tighter">
               about us
             </h2>
           </div>
@@ -143,6 +190,24 @@ export const AboutUs = () => {
               reflect confidence, quality and enduring distinction.
             </p>
           </div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="mt-40 grid grid-cols-2 pt-10 md:grid-cols-4">
+          {STATS.map((stat, idx) => (
+            <div
+              key={idx}
+              className={cn(
+                "flex flex-col items-center justify-center px-4 text-center",
+                idx !== STATS.length - 1 ? "border-border md:border-r-2" : ""
+              )}
+            >
+              <span className="font-primary mb-6 text-6xl font-normal tracking-tighter md:text-7xl lg:text-[5.5rem]">
+                <Counter to={stat.value} />
+              </span>
+              <span className="text-muted text-[14px] tracking-widest uppercase">{stat.label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
