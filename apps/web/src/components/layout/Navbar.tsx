@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -18,14 +18,29 @@ export const Navbar = () => {
   const { resolvedTheme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
+      const currentScrollY = window.scrollY;
+
+      // Handle background and styling change
+      setIsScrolled(currentScrollY > 100);
+
+      // Handle hide/show logic based on scroll direction
+      if (currentScrollY > lastScrollY.current && currentScrollY > 150) {
+        // Scrolling down
+        setIsVisible(false);
+      } else {
+        // Scrolling up or at top
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Check initial state
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -34,8 +49,9 @@ export const Navbar = () => {
   return (
     <header
       className={cn(
-        "fixed top-0 right-0 left-0 z-[100] transition-all duration-300",
-        isScrolled ? "bg-background py-2 shadow-sm" : "bg-transparent py-4"
+        "fixed top-0 right-0 left-0 z-[100] transition-all duration-500 ease-in-out",
+        isScrolled ? "bg-background py-2 shadow-sm" : "bg-transparent py-4",
+        isVisible ? "translate-y-0" : "-translate-y-full"
       )}
     >
       <div className="relative container flex items-center justify-between">
