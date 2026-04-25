@@ -59,6 +59,8 @@ const STATS = [
   { value: 20, label: "SATISFIED CLIENTS" },
 ];
 
+const CLIENT_IMAGES = Array.from({ length: 18 }, (_, i) => `/images/clients/client${i + 1}.png`);
+
 const Counter = ({ from = 0, to }: { from?: number; to: number }) => {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
@@ -139,7 +141,7 @@ export const AboutUs = () => {
 
         {/* Scroll Reveal Text */}
         <div ref={containerRef} className="mx-auto my-10 max-w-5xl">
-          <h3 className="font-primary flex flex-wrap justify-end text-right text-4xl leading-snug font-medium tracking-tight">
+          <h3 className="font-primary flex flex-wrap justify-start text-left text-4xl leading-snug font-medium tracking-tight">
             {WORDS.map((word, i) => {
               const start = i / WORDS.length;
               const end = start + 1 / WORDS.length;
@@ -170,7 +172,7 @@ export const AboutUs = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-40 grid grid-cols-1 items-end gap-16 md:grid-cols-2">
+        {/* <div className="mt-40 grid grid-cols-1 items-end gap-16 md:grid-cols-2">
           <div className="flex gap-6">
             <div className="relative h-40 w-64 overflow-hidden rounded-3xl">
               <Image src="/images/home-hero.png" alt="Architecture" fill className="object-cover" />
@@ -190,10 +192,10 @@ export const AboutUs = () => {
               reflect confidence, quality and enduring distinction.
             </p>
           </div>
-        </div>
+        </div> */}
 
         {/* Stats Section */}
-        <div className="mt-40 grid grid-cols-2 pt-10 md:grid-cols-4">
+        <div className="mt-40 grid grid-cols-2 md:grid-cols-4">
           {STATS.map((stat, idx) => (
             <div
               key={idx}
@@ -210,6 +212,56 @@ export const AboutUs = () => {
           ))}
         </div>
       </div>
+
+      <ClientMarquee />
     </section>
+  );
+};
+
+const ClientMarquee = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let animationFrameId: number;
+    let position = 0;
+    const speed = 1.0; // Adjust for smoothness
+
+    const tick = () => {
+      position -= speed;
+      const firstChild = container.firstElementChild as HTMLElement;
+
+      if (firstChild) {
+        // Calculate the total width of the item plus the gap (gap-16 = 64px)
+        const totalWidth = firstChild.offsetWidth + 64;
+
+        if (-position >= totalWidth) {
+          // Linked list behavior: append the first node to the end
+          container.appendChild(firstChild);
+          // Adjust position so it doesn't jump
+          position += totalWidth;
+        }
+      }
+
+      container.style.transform = `translate3d(${position}px, 0, 0)`;
+      animationFrameId = requestAnimationFrame(tick);
+    };
+
+    animationFrameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
+  return (
+    <div className="w-full overflow-hidden py-20">
+      <div ref={containerRef} className="flex w-max items-center gap-16 px-8">
+        {CLIENT_IMAGES.map((src, i) => (
+          <div key={i} className="relative h-42 w-42 flex-shrink-0 transition-all duration-300">
+            <Image src={src} alt={`Client ${i + 1}`} fill className="object-contain" />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
