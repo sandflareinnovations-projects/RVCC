@@ -1,3 +1,4 @@
+import { AboutUs } from "./AboutUs";
 import { Hero } from "./Hero";
 
 export const HomePage = () => {
@@ -8,6 +9,7 @@ export const HomePage = () => {
       <div className="pointer-events-none absolute top-1/2 -right-24 h-96 w-96 -translate-y-1/2 rounded-full bg-orange-600/20 blur-[120px]" />
 
       <Hero />
+      <AboutUs />
     </div>
   );
 };
