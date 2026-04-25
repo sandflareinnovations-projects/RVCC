@@ -128,47 +128,68 @@ export const AboutUs = () => {
   });
 
   return (
-    <section className="bg-background py-section relative z-10" id="about">
+    <section className="bg-background py-section relative z-10 mx-auto max-w-7xl" id="about">
       <div className="container">
         {/* Header */}
-        <div className="mb-20 flex items-end justify-between">
+        <div className="mb-10 flex items-end justify-between">
           <div className="flex flex-col">
-            <h2 className="text-brand-blue/80 text-[14rem] leading-[0.8] tracking-tighter">
+            <h2 className="text-brand-blue/80 text-[10rem] leading-[0.8] tracking-tighter">
               about us
             </h2>
           </div>
         </div>
 
-        {/* Scroll Reveal Text */}
-        <div ref={containerRef} className="mx-auto my-10 max-w-5xl">
-          <h3 className="font-primary flex flex-wrap justify-start text-left text-4xl leading-snug font-medium tracking-tight">
-            {WORDS.map((word, i) => {
-              const start = i / WORDS.length;
-              const end = start + 1 / WORDS.length;
+        {/* Scroll Reveal Text & Image */}
+        <div className="my-10 flex flex-col items-center justify-between md:flex-row">
+          <div ref={containerRef} className="max-w-4xl flex-[1.5]">
+            <h3 className="font-primary flex flex-wrap justify-start text-left text-4xl leading-snug font-medium tracking-tight">
+              {WORDS.map((word, i) => {
+                const start = i / WORDS.length;
+                const end = start + 1 / WORDS.length;
 
-              if (word.startsWith("[img")) {
+                if (word.startsWith("[img")) {
+                  return (
+                    <span
+                      key={i}
+                      className="relative top-2 mx-3 mb-3 inline-block h-12 w-24 overflow-hidden rounded-full md:h-10 md:w-32"
+                    >
+                      <Image
+                        src="/images/home-hero.png"
+                        alt="Detail"
+                        fill
+                        className="object-cover"
+                      />
+                    </span>
+                  );
+                }
+
                 return (
-                  <span
+                  <Word
                     key={i}
-                    className="relative top-2 mx-3 mb-3 inline-block h-12 w-24 overflow-hidden rounded-full md:h-10 md:w-32"
+                    progress={scrollYProgress}
+                    range={[start, end]}
+                    inactiveColor={inactiveColor}
                   >
-                    <Image src="/images/home-hero.png" alt="Detail" fill className="object-cover" />
-                  </span>
+                    {word}
+                  </Word>
                 );
-              }
+              })}
+            </h3>
+          </div>
 
-              return (
-                <Word
-                  key={i}
-                  progress={scrollYProgress}
-                  range={[start, end]}
-                  inactiveColor={inactiveColor}
-                >
-                  {word}
-                </Word>
-              );
-            })}
-          </h3>
+          <div className="flex w-full flex-1 justify-end">
+            <div
+              className="relative aspect-[3.5/4] w-full max-w-md overflow-hidden rounded-2xl bg-gray-100"
+              style={{ clipPath: "url(#project-mask)" }}
+            >
+              <Image
+                src="/images/home-hero.png"
+                alt="About RVCC"
+                fill
+                className="object-cover transition-transform duration-700 hover:scale-105"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Bottom Section */}
@@ -204,7 +225,7 @@ export const AboutUs = () => {
                 idx !== STATS.length - 1 ? "border-border md:border-r-2" : ""
               )}
             >
-              <span className="font-primary mb-6 text-6xl font-normal tracking-tighter md:text-7xl lg:text-[5.5rem]">
+              <span className="font-primary mb-6 text-6xl font-medium tracking-tighter md:text-7xl lg:text-[5.5rem]">
                 <Counter to={stat.value} />
               </span>
               <span className="text-muted text-[14px] tracking-widest uppercase">{stat.label}</span>
