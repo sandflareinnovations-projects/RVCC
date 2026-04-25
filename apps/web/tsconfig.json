@@ -22,7 +22,7 @@
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
       "@ui/*": ["./src/components/ui/*"],
-      "@sections/*": ["./src/components/sections/*"],
+      "@features/*": ["./src/features/*"],
       "@layout/*": ["./src/components/layout/*"],
       "@lib/*": ["./src/lib/*"],
       "@types/*": ["./src/types/*"],
