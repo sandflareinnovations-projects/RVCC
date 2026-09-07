@@ -36,9 +36,15 @@ export async function handleEnquireRequest(request: Request, env: Env): Promise<
 
   try {
     if (path === "/otp/request" && request.method === "POST") {
+      const { enforceRateLimit } = await import("../lib/rate-limit");
+      const limited = await enforceRateLimit(request, env, "enquire:otp-req", { limit: 5, windowSeconds: 300 });
+      if (limited) return limited;
       return await handleOtpRequest(sql, env, request);
     }
     if (path === "/otp/verify" && request.method === "POST") {
+      const { enforceRateLimit } = await import("../lib/rate-limit");
+      const limited = await enforceRateLimit(request, env, "enquire:otp-verify", { limit: 10, windowSeconds: 300 });
+      if (limited) return limited;
       return await handleOtpVerify(sql, env, request);
     }
     if (path === "/draft" && request.method === "GET") {

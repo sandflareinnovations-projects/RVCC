@@ -46,6 +46,9 @@ export async function handlePublicCareersRequest(request: Request, env: Env): Pr
     const path = url.pathname.replace(/\/+$/, "") || "/";
 
     if (request.method === "POST" && path.endsWith("/apply")) {
+      const { enforceRateLimit } = await import("../../lib/rate-limit");
+      const limited = await enforceRateLimit(request, env, "public:career-apply", { limit: 10, windowSeconds: 600 });
+      if (limited) return limited;
       return await handleCareerApply(null, env, request);
     }
     if (request.method === "GET") {
