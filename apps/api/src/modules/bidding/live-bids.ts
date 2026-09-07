@@ -172,6 +172,26 @@ export async function handleVendorLiveBids(
   const vendor = await getVendorFromSession(sql, vendorSessionFrom(request));
   if (!vendor) return json(env, request, { error: "Not signed in." }, 401);
 
+  // Authorize vendor access to this requirement
+  const { prisma } = await import("../../lib/prisma");
+  const accessible = await prisma.requirement.findFirst({
+    where: {
+      id: requirementId,
+      deletedAt: null,
+      status: { in: ["OPEN", "AWARDED", "CANCELLED"] },
+      OR: [
+        { invites: { some: { vendorUserId: vendor.id } } },
+        { quotes: { some: { vendorUserId: vendor.id } } },
+        { status: "OPEN" },
+      ],
+    },
+    select: { id: true },
+  });
+
+  if (!accessible) {
+    return json(env, request, { error: "Requirement not found or access denied." }, 404);
+  }
+
   const acceptsSse = request.headers.get("Accept")?.includes("text/event-stream");
 
   if (acceptsSse) {

@@ -2,6 +2,7 @@ import type { Env } from "../config/env";
 import { corsHeaders, json } from "../lib/http";
 import { createSql } from "../modules/admin/db";
 import { releaseSql } from "../lib/sql";
+import { requireAdmin } from "../modules/admin/auth";
 import {
   handleCareerCreate,
   handleCareerDelete,
@@ -175,6 +176,8 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
     }
 
     if (path === "/bidding/fx-sync" && request.method === "POST") {
+      const { deny } = await requireAdmin(sql, env, request, "REVIEWER");
+      if (deny) return deny;
       const { syncExchangeRates } = await import("../modules/bidding/fx");
       await syncExchangeRates();
       return json(env, request, { ok: true, message: "Exchange rates synchronized successfully" });
