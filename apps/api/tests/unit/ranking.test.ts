@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { getRequirementRankings, buildVendorLiveBidsPayload } from "../../src/modules/bidding/ranking";
+import { getRequirementRankings, buildVendorLiveBidsPayload } from "../../src/modules/sourcing/bidding/ranking.service";
 import { prisma } from "../../src/lib/prisma";
 
 // Mock the prisma client for deterministic unit testing

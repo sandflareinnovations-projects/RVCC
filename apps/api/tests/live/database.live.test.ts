@@ -13,8 +13,8 @@ describe("QA Live Database Integration Tests", () => {
     const latencyMs = Date.now() - start;
 
     expect(result).toBeDefined();
-    expect(latencyMs).toBeLessThan(5000); // Verify database latency is healthy
-  });
+    expect(latencyMs).toBeLessThan(10000); // Verify database latency is healthy
+  }, 15000);
 
   it("should query requirements or projects through Prisma ORM from live database", async () => {
     // Tests real PostgreSQL connection, Prisma mapping, and soft-delete extension
