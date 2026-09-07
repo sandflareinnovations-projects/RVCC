@@ -32,7 +32,27 @@ export async function getProjects(): Promise<DetailedProject[]> {
       return [];
     }
 
-    return data.projects;
+    return data.projects.map((p) => {
+      const fallbackImage = "/images/projects/13.webp";
+      const image =
+        (p as any).image ||
+        (p as any).coverImage ||
+        (p.gallery?.[0] as any)?.imageUrl ||
+        (typeof p.gallery?.[0] === "string" ? p.gallery[0] : null) ||
+        fallbackImage;
+      const gallery = Array.isArray(p.gallery)
+        ? p.gallery
+            .map((g: any) => (typeof g === "string" ? g : g?.imageUrl))
+            .filter(Boolean)
+        : [];
+
+      return {
+        ...p,
+        image,
+        coverImage: (p as any).coverImage || image,
+        gallery: gallery.length > 0 ? gallery : [image],
+      };
+    });
   } catch (err) {
     console.error("[projects] Could not reach API:", err);
     return [];
@@ -50,7 +70,28 @@ export async function getProjectBySlug(slug: string): Promise<DetailedProject | 
 
     if (res.ok) {
       const data = (await res.json()) as { project?: DetailedProject };
-      if (data.project) return data.project;
+      if (data.project) {
+        const p = data.project;
+        const fallbackImage = "/images/projects/13.webp";
+        const image =
+          (p as any).image ||
+          (p as any).coverImage ||
+          (p.gallery?.[0] as any)?.imageUrl ||
+          (typeof p.gallery?.[0] === "string" ? p.gallery[0] : null) ||
+          fallbackImage;
+        const gallery = Array.isArray(p.gallery)
+          ? p.gallery
+              .map((g: any) => (typeof g === "string" ? g : g?.imageUrl))
+              .filter(Boolean)
+          : [];
+
+        return {
+          ...p,
+          image,
+          coverImage: (p as any).coverImage || image,
+          gallery: gallery.length > 0 ? gallery : [image],
+        };
+      }
     }
     return null;
   } catch (err) {

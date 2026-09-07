@@ -24,7 +24,7 @@ export const ProjectDetailClient: React.FC<ProjectDetailClientProps> = ({ projec
           className="absolute inset-0 z-0"
         >
           <Image
-            src={project.image}
+            src={project.image || (project as any).coverImage || "/images/projects/13.webp"}
             alt={project.title}
             fill
             priority

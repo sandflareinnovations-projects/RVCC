@@ -48,10 +48,10 @@ export const ProjectList = ({ initialProjects }: { initialProjects?: DetailedPro
                   className="group relative flex flex-col border border-zinc-100 bg-white transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]"
                 >
                   {/* Top: Cinematic Image Section */}
-                  <div className="relative aspect-[16/8] w-full overflow-hidden">
+                  <div className="relative aspect-[16/8] w-full overflow-hidden bg-zinc-100">
                     <Image
-                      src={project.image}
-                      alt={project.title}
+                      src={project.image || (project as any).coverImage || "/images/projects/13.webp"}
+                      alt={project.title || "Project"}
                       fill
                       className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 50vw"

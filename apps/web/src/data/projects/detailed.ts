@@ -8,6 +8,7 @@ export interface DetailedProject extends MajorProjectItem {
   status: "Completed" | "In Progress" | "Upcoming";
   gallery: string[];
   scope: string[];
+  coverImage?: string;
 }
 
 export const PROJECTS: DetailedProject[] = [
