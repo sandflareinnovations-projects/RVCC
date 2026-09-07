@@ -1,6 +1,10 @@
 export * as AuthModule from "./auth";
-export * as BiddingModule from "./bidding";
+export * as CareersModule from "./careers";
 export * as ContentModule from "./content";
+export * as DocumentsModule from "./documents";
 export * as EnquireModule from "./enquire";
+export * as FileManagerModule from "./file-manager";
 export * as ProcurementModule from "./procurement";
-export * as VendorModule from "./vendor";
+export * as SourcingModule from "./sourcing";
+export * as SystemModule from "./system";
+export * as VendorsModule from "./vendors";

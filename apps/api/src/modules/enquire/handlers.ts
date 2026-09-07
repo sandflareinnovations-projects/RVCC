@@ -3,7 +3,7 @@ import type { Env } from "../../config/env";
 import { json } from "../../lib/http";
 import { hashPassword } from "../../lib/password";
 import { sendOtpEmail, sendSubmittedEmail, smtpConfigured } from "../mail/mail";
-import { createVendorSession } from "../vendor/auth";
+import { createVendorSession } from "../auth/services/vendor-auth.service";
 import {
   cuid,
   ensureDraftForEmail,
