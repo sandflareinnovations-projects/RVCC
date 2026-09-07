@@ -2,14 +2,18 @@ import type { Env } from "../../config/env";
 import { prisma } from "../../lib/prisma";
 import { requireAdmin } from "./auth";
 
-function toCsvRow(cells: (string | number | null | undefined)[]): string {
-  return cells
-    .map((cell) => {
-      if (cell === null || cell === undefined) return '""';
-      const str = String(cell).replace(/"/g, '""');
-      return `"${str}"`;
-    })
-    .join(",");
+export function sanitizeCsvCell(cell: string | number | null | undefined): string {
+  if (cell === null || cell === undefined) return '""';
+  let str = String(cell);
+  // Mitigate CSV / Formula Injection in Excel and LibreOffice
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
+  return `"${str.replace(/"/g, '""')}"`;
+}
+
+export function toCsvRow(cells: (string | number | null | undefined)[]): string {
+  return cells.map(sanitizeCsvCell).join(",");
 }
 
 /**
