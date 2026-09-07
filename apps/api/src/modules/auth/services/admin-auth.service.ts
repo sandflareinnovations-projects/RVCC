@@ -1,0 +1,344 @@
+import { randomBytes } from "node:crypto";
+import type { Prisma } from "@prisma/client";
+import type { Env } from "../../../config/env";
+import { json } from "../../../lib/http";
+import { hashPassword, verifyPassword } from "../../../lib/password";
+import { prisma } from "../../../lib/prisma";
+import { hashSha256 } from "../../../lib/sql";
+import {
+  ADMIN_SESSION_TTL_MS,
+  type AdminIdentity,
+  type AdminRoleName,
+  type AuditLogEntry,
+  LOCKOUT_MS,
+  type LoginResult,
+  MAX_FAILED_ATTEMPTS,
+  ROLE_RANK,
+} from "../types/auth.types";
+
+export class AuthServiceError extends Error {
+  constructor(cause?: unknown) {
+    super("Session lookup temporarily unavailable");
+    this.name = "AuthServiceError";
+    this.cause = cause;
+  }
+}
+
+function generateSessionToken(): string {
+  return randomBytes(32).toString("hex");
+}
+
+export class AdminAuthService {
+  /**
+   * Always returns the same generic failure for a bad email and a bad password so
+   * the response cannot be used to enumerate valid admin accounts.
+   */
+  static async attemptAdminLogin(
+    _sql: unknown,
+    email: string,
+    password: string,
+    meta?: { ipAddress?: string; userAgent?: string }
+  ): Promise<LoginResult> {
+    const normalized = email.trim().toLowerCase();
+    const ip = meta?.ipAddress || "127.0.0.1";
+    const userAgent = meta?.userAgent || "";
+
+    const admin = await prisma.adminUser.findUnique({
+      where: { email: normalized },
+      include: { role: true },
+    });
+
+    if (!admin) {
+      await hashPassword(password);
+      return { ok: false, reason: "invalid" };
+    }
+
+    if (admin.lockedUntil && new Date(admin.lockedUntil) > new Date()) {
+      void prisma.adminLoginHistory
+        .create({
+          data: {
+            adminId: admin.id,
+            ipAddress: ip,
+            userAgent,
+            status: "FAILED",
+            failureReason: "ACCOUNT_LOCKED",
+          },
+        })
+        .catch(() => {});
+
+      return {
+        ok: false,
+        reason: "locked",
+        retryAfterMs: new Date(admin.lockedUntil).getTime() - Date.now(),
+      };
+    }
+
+    if (!admin.isActive) {
+      void prisma.adminLoginHistory
+        .create({
+          data: {
+            adminId: admin.id,
+            ipAddress: ip,
+            userAgent,
+            status: "FAILED",
+            failureReason: "ACCOUNT_DISABLED",
+          },
+        })
+        .catch(() => {});
+
+      return { ok: false, reason: "disabled" };
+    }
+
+    if (!(await verifyPassword(password, admin.passwordHash))) {
+      const failedAttempts = Number(admin.failedAttempts) + 1;
+      const lock = failedAttempts >= MAX_FAILED_ATTEMPTS;
+
+      await prisma.adminUser.update({
+        where: { id: admin.id },
+        data: {
+          failedAttempts: lock ? 0 : failedAttempts,
+          lockedUntil: lock ? new Date(Date.now() + LOCKOUT_MS) : null,
+        },
+      });
+
+      void prisma.adminLoginHistory
+        .create({
+          data: {
+            adminId: admin.id,
+            ipAddress: ip,
+            userAgent,
+            status: "FAILED",
+            failureReason: "INVALID_PASSWORD",
+          },
+        })
+        .catch(() => {});
+
+      return lock
+        ? { ok: false, reason: "locked", retryAfterMs: LOCKOUT_MS }
+        : { ok: false, reason: "invalid" };
+    }
+
+    await prisma.adminUser.update({
+      where: { id: admin.id },
+      data: {
+        failedAttempts: 0,
+        lockedUntil: null,
+        lastLoginAt: new Date(),
+      },
+    });
+
+    void prisma.adminLoginHistory
+      .create({
+        data: {
+          adminId: admin.id,
+          ipAddress: ip,
+          userAgent,
+          status: "SUCCESS",
+          failureReason: null,
+        },
+      })
+      .catch(() => {});
+
+    const roleName = (admin.role?.name || "ADMIN") as AdminRoleName;
+
+    return {
+      ok: true,
+      adminId: admin.id,
+      admin: {
+        id: admin.id,
+        email: admin.email,
+        name: admin.name,
+        role: roleName,
+      },
+    };
+  }
+
+  static async createAdminSession(
+    _sql: unknown,
+    adminId: string,
+    userAgent = ""
+  ): Promise<string> {
+    const token = generateSessionToken();
+    const tokenHash = await hashSha256(token);
+    const expiresAt = new Date(Date.now() + ADMIN_SESSION_TTL_MS);
+
+    await prisma.adminSession.create({
+      data: {
+        tokenHash,
+        adminId,
+        userAgent: userAgent.slice(0, 255),
+        expiresAt,
+      },
+    });
+
+    return token;
+  }
+
+  static async getAdminFromSession(
+    _sql: unknown,
+    token: string | null | undefined
+  ): Promise<AdminIdentity | null> {
+    if (!token) return null;
+
+    try {
+      const tokenHash = await hashSha256(token);
+      const session = await prisma.adminSession.findUnique({
+        where: { tokenHash },
+        include: {
+          admin: {
+            include: { role: true },
+          },
+        },
+      });
+
+      if (!session) return null;
+      if (session.revokedAt) return null;
+      if (new Date(session.expiresAt) < new Date()) return null;
+      if (!session.admin || !session.admin.isActive) return null;
+
+      const expiresAtMs = new Date(session.expiresAt).getTime();
+      if (expiresAtMs - Date.now() < ADMIN_SESSION_TTL_MS / 2) {
+        void prisma.adminSession
+          .update({
+            where: { id: session.id },
+            data: {
+              expiresAt: new Date(Date.now() + ADMIN_SESSION_TTL_MS),
+            },
+          })
+          .catch(() => {});
+      }
+
+      const roleName = (session.admin.role?.name || "ADMIN") as AdminRoleName;
+
+      return {
+        id: session.admin.id,
+        email: session.admin.email,
+        name: session.admin.name,
+        role: roleName,
+      };
+    } catch (err) {
+      throw new AuthServiceError(err);
+    }
+  }
+
+  static async revokeAdminSession(
+    _sql: unknown,
+    token: string | null | undefined
+  ): Promise<void> {
+    if (!token) return;
+    try {
+      const tokenHash = await hashSha256(token);
+      await prisma.adminSession.updateMany({
+        where: { tokenHash, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
+    } catch {
+      /* already gone */
+    }
+  }
+
+  static hasRole(role: AdminRoleName, minimum: AdminRoleName): boolean {
+    return (ROLE_RANK[role] ?? 0) >= (ROLE_RANK[minimum] ?? 0);
+  }
+
+  /** Fire-and-forget is deliberate: an audit write must never block the action itself. */
+  static async writeAudit(_sql: unknown, entry: AuditLogEntry): Promise<void> {
+    try {
+      let actorName = entry.actorName ?? "";
+      let actorRole = entry.actorRole ?? "";
+
+      if (!actorName && entry.adminId) {
+        const admin = await prisma.adminUser.findUnique({
+          where: { id: entry.adminId },
+          include: { role: true },
+        });
+        if (admin) {
+          actorName = admin.name || admin.email;
+          actorRole = admin.role?.name || "";
+        }
+      } else if (!actorName && entry.vendorId) {
+        const vendor = await prisma.vendorUser.findUnique({
+          where: { id: entry.vendorId },
+        });
+        if (vendor) {
+          actorName = vendor.name || vendor.email;
+          actorRole = "VENDOR";
+        }
+      }
+
+      await prisma.auditLog.create({
+        data: {
+          adminId: entry.adminId ?? null,
+          vendorId: entry.vendorId ?? null,
+          action: entry.action,
+          entityType: entry.entityType,
+          entityId: entry.entityId,
+          actorName,
+          actorRole,
+          previousStatus: entry.previousStatus ?? null,
+          newStatus: entry.newStatus ?? null,
+          note: entry.note ?? null,
+          metadata: (entry.metadata ?? {}) as Prisma.InputJsonValue,
+        },
+      });
+    } catch (err) {
+      console.error("[audit] write failed", entry.action, err);
+    }
+  }
+
+  /**
+   * Auth gate for admin API routes.
+   * Session token is read from `X-Admin-Session` (raw token; DB stores SHA-256).
+   */
+  static async requireAdmin(
+    sql: unknown,
+    env: Env,
+    request: Request,
+    minimum: AdminRoleName = "ADMIN"
+  ): Promise<{ admin: AdminIdentity; deny: null } | { admin: null; deny: Response }> {
+    const token = request.headers.get("X-Admin-Session");
+    if (!token) {
+      return {
+        admin: null,
+        deny: json(env, request, { error: "Not signed in." }, 401),
+      };
+    }
+
+    let admin: AdminIdentity | null;
+    try {
+      admin = await AdminAuthService.getAdminFromSession(sql, token);
+    } catch (err) {
+      if (err instanceof AuthServiceError) {
+        return {
+          admin: null,
+          deny: json(env, request, { error: "Service temporarily unavailable." }, 503),
+        };
+      }
+      throw err;
+    }
+
+    if (!admin) {
+      return {
+        admin: null,
+        deny: json(env, request, { error: "Session expired or invalid." }, 401),
+      };
+    }
+
+    if (!AdminAuthService.hasRole(admin.role, minimum)) {
+      return {
+        admin: null,
+        deny: json(env, request, { error: "Forbidden: insufficient permissions." }, 403),
+      };
+    }
+
+    return { admin, deny: null };
+  }
+}
+
+export const attemptAdminLogin = AdminAuthService.attemptAdminLogin;
+export const createAdminSession = AdminAuthService.createAdminSession;
+export const getAdminFromSession = AdminAuthService.getAdminFromSession;
+export const revokeAdminSession = AdminAuthService.revokeAdminSession;
+export const hasRole = AdminAuthService.hasRole;
+export const writeAudit = AdminAuthService.writeAudit;
+export const requireAdmin = AdminAuthService.requireAdmin;
