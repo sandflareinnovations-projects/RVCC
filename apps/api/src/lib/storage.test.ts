@@ -1,0 +1,96 @@
+import { describe, expect, it } from "vitest";
+import {
+  detectMagicMime,
+  validateUploadBytes,
+  validateUploadFile,
+  sanitizeFileName,
+  storageKeyForCareer,
+  storageKeyForQuote,
+} from "./storage";
+
+describe("QA Security Tests: File Upload & Storage Key Sanitization", () => {
+  describe("Path Traversal & Filename Sanitization", () => {
+    it("should strip directory traversal characters from file names", () => {
+      expect(sanitizeFileName("../../../etc/passwd")).toBe("passwd");
+      expect(sanitizeFileName("..\\..\\windows\\system32\\cmd.exe")).toBe("cmd.exe");
+      expect(sanitizeFileName("valid-file_name (1).pdf")).toBe("valid-file_name (1).pdf");
+    });
+
+    it("should safely slugify names in career storage keys", () => {
+      const key = storageKeyForCareer("job123", "malicious/../../test.pdf", "John Doe");
+      expect(key.startsWith("careers/job123/john-doe-cv-")).toBe(true);
+      expect(key.endsWith(".pdf")).toBe(true);
+      expect(key.includes("..")).toBe(false);
+    });
+
+    it("should safely slugify names in quote storage keys", () => {
+      const key = storageKeyForQuote("req1", "quote2", "secret_doc.pdf");
+      expect(key.startsWith("procurement/quotes/req1/quote2/secret-doc-")).toBe(true);
+      expect(key.endsWith(".pdf")).toBe(true);
+      expect(key.includes("..")).toBe(false);
+    });
+  });
+
+  describe("Magic Byte MIME Detection & Content Sniffing", () => {
+    it("should detect authentic PDF header (%PDF-)", () => {
+      const pdfBytes = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34]);
+      expect(detectMagicMime(pdfBytes)).toBe("application/pdf");
+    });
+
+    it("should detect authentic PNG header", () => {
+      const pngBytes = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+      expect(detectMagicMime(pngBytes)).toBe("image/png");
+    });
+
+    it("should detect authentic JPEG header", () => {
+      const jpegBytes = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10]);
+      expect(detectMagicMime(jpegBytes)).toBe("image/jpeg");
+    });
+
+    it("should reject spoofed files (e.g. bash script or exe renamed to .pdf)", () => {
+      // Shell script: #!/bin/bash
+      const scriptBytes = new TextEncoder().encode("#!/bin/bash\necho 'hacked'");
+      expect(detectMagicMime(scriptBytes)).toBeNull();
+
+      const err = validateUploadBytes(scriptBytes, {
+        maxBytes: 10 * 1024 * 1024,
+        allowedMimes: new Set(["application/pdf"]),
+      });
+      expect(err).toMatch(/invalid or not allowed/i);
+    });
+  });
+
+  describe("Size Boundary Tests", () => {
+    it("should reject empty files (0 bytes)", () => {
+      const emptyBytes = new Uint8Array(0);
+      expect(validateUploadBytes(emptyBytes, { maxBytes: 1024 })).toBe("File is empty");
+    });
+
+    it("should reject files exceeding maxBytes", () => {
+      const oversizedBytes = new Uint8Array(1025);
+      // Valid PDF magic header
+      oversizedBytes[0] = 0x25;
+      oversizedBytes[1] = 0x50;
+      oversizedBytes[2] = 0x44;
+      oversizedBytes[3] = 0x46;
+
+      const err = validateUploadBytes(oversizedBytes, { maxBytes: 1024 });
+      expect(err).toMatch(/File must be/i);
+    });
+
+    it("should accept valid files within boundary", () => {
+      const validPdfBytes = new Uint8Array(100);
+      validPdfBytes[0] = 0x25;
+      validPdfBytes[1] = 0x50;
+      validPdfBytes[2] = 0x44;
+      validPdfBytes[3] = 0x46;
+
+      expect(
+        validateUploadBytes(validPdfBytes, {
+          maxBytes: 1024,
+          allowedMimes: new Set(["application/pdf"]),
+        })
+      ).toBeNull();
+    });
+  });
+});
