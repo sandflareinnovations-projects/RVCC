@@ -1,8 +1,8 @@
+import type { ServiceDTO } from "@rvcc/types";
 import { notFound } from "next/navigation";
 
 import { adminSessionJson } from "@/lib/admin-data";
 import { ServiceDetailView } from "@/sections/services/ServiceDetailView";
-import type { ServiceDTO } from "@rvcc/types";
 
 export const dynamic = "force-dynamic";
 

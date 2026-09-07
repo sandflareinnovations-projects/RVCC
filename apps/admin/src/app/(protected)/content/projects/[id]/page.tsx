@@ -1,8 +1,8 @@
+import type { ProjectDTO } from "@rvcc/types";
 import { notFound } from "next/navigation";
 
 import { adminSessionJson } from "@/lib/admin-data";
 import { ProjectEditor } from "@/sections/projects/ProjectEditor";
-import type { ProjectDTO } from "@rvcc/types";
 
 export const dynamic = "force-dynamic";
 

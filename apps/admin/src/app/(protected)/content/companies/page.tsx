@@ -1,10 +1,10 @@
+import type { SisterCompanyDTO } from "@rvcc/types";
 import { Suspense } from "react";
 
 import { adminSessionJson } from "@/lib/admin-data";
 import { hasRole } from "@/lib/constants";
 import { getAdminFromSession } from "@/lib/session";
 import { CompaniesGrid } from "@/sections/companies/CompaniesGrid";
-import type { SisterCompanyDTO } from "@rvcc/types";
 
 export const dynamic = "force-dynamic";
 

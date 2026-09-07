@@ -1,9 +1,9 @@
+import type { GalleryImageDTO, ProjectDTO } from "@rvcc/types";
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminSessionJson } from "@/lib/admin-data";
 import { GalleryGrid } from "@/sections/gallery/GalleryGrid";
-import type { GalleryImageDTO, ProjectDTO } from "@rvcc/types";
 
 export const dynamic = "force-dynamic";
 

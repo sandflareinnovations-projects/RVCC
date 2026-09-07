@@ -9,7 +9,6 @@ import {
   Info,
   ShieldCheck,
   SlidersHorizontal,
-  Sparkles,
   UserCheck,
   Wrench,
 } from "lucide-react";

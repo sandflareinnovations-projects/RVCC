@@ -1,8 +1,8 @@
+import type { HeroSlideDTO } from "@rvcc/types";
 import { notFound } from "next/navigation";
 
 import { adminSessionJson } from "@/lib/admin-data";
 import { HeroSlideEditor } from "@/sections/hero/HeroSlideEditor";
-import type { HeroSlideDTO } from "@rvcc/types";
 
 export const dynamic = "force-dynamic";
 

@@ -1,4 +1,3 @@
-import { SmoothScroll } from "@/components/ui";
 import { adminSessionJson } from "@/lib/admin-data";
 import type { CachedVendorRow } from "@/lib/vendor-cache";
 import { PostRequirementForm } from "@/sections/requirements/PostRequirementForm";

@@ -1,3 +1,4 @@
+import type { ProjectDTO } from "@rvcc/types";
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
@@ -5,7 +6,6 @@ import { adminSessionJson } from "@/lib/admin-data";
 import { hasRole } from "@/lib/constants";
 import { getAdminFromSession } from "@/lib/session";
 import { ProjectsGrid } from "@/sections/projects/ProjectsGrid";
-import type { ProjectDTO } from "@rvcc/types";
 
 export const dynamic = "force-dynamic";
 
