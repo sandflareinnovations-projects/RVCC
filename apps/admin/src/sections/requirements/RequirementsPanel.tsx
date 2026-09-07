@@ -8,7 +8,6 @@ import {
   Clock,
   Edit2,
   FileText,
-  Loader2,
   Lock,
   Radio,
   RefreshCw,
@@ -34,6 +33,7 @@ import {
 } from "@/lib/requirements-cache";
 import { fetchTableJson } from "@/lib/table-fetch";
 import { AnimatedSearchInput } from "@/lib/ui";
+
 import { DeleteRequirementConfirmModal } from "./DeleteRequirementConfirmModal";
 
 type RequirementRow = CachedRequirementRow;
