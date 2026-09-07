@@ -1,5 +1,6 @@
 export * from "./analytics-charts";
 export * from "./back-button";
+export * from "./custom-select";
 export * from "./interactive-hover-button";
 export * from "./kpi-card";
 export * from "./loader";
@@ -9,4 +10,3 @@ export * from "./points-chart";
 export * from "./sidebar";
 export * from "./skeleton";
 export * from "./SmoothScroll";
-export * from "./custom-select";
