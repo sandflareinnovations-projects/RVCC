@@ -1,5 +1,4 @@
 import { Footer } from "@components/layout/Footer";
-import { clients as fallbackClients } from "@data/clients";
 import { ClientsGrid } from "@sections/clients/ClientsGrid";
 import { ClientsHero } from "@sections/clients/ClientsHero";
 import { Metadata } from "next";

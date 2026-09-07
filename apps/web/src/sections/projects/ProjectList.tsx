@@ -4,10 +4,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
+import { DetailedProject } from "@/data/projects/detailed";
 import { Icons } from "@/lib/icons";
 
 import { useProjectFilters } from "../../hooks/useProjectFilters";
-import { DetailedProject } from "@/data/projects/detailed";
 import { ProjectFilters } from "./ProjectFilters";
 
 export const ProjectList = ({ initialProjects }: { initialProjects?: DetailedProject[] }) => {

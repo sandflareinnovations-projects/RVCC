@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
 import { getDocumentBySlug } from "@/lib/content/documents";
+
 import { DocumentReaderClient } from "./reader-client";
 
 interface PageProps {

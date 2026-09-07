@@ -4,7 +4,6 @@ import { Metadata } from "next";
 
 import Contact from "@/components/common/Contact";
 import { Footer } from "@/components/layout/Footer";
-
 import { getServices } from "@/lib/content/services";
 
 export const metadata: Metadata = {

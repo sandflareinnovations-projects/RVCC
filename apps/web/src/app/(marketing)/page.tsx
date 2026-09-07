@@ -4,11 +4,11 @@ import dynamic from "next/dynamic";
 
 import { FloatingContact } from "@/components/common/FloatingContact";
 import { Footer } from "@/components/layout/Footer";
-import { getHeroSlides } from "@/lib/content/hero";
-import { getSisterCompanies } from "@/lib/content/companies";
 import { getClientPartners } from "@/lib/content/clients";
-import { getServices } from "@/lib/content/services";
+import { getSisterCompanies } from "@/lib/content/companies";
+import { getHeroSlides } from "@/lib/content/hero";
 import { getProjects } from "@/lib/content/projects";
+import { getServices } from "@/lib/content/services";
 
 // Dynamically load heavy components below the fold
 const Leaders = dynamic(() => import("@sections/home/Leaders").then((mod) => mod.Leaders), {

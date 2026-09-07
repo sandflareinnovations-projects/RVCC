@@ -1,5 +1,6 @@
 import { Footer } from "@layout/Footer";
 
+import { getClientPartners } from "@/lib/content/clients";
 import { AboutCertifications } from "@/sections/about/AboutCertifications";
 import { AboutClients } from "@/sections/about/AboutClients";
 import { AboutCTA } from "@/sections/about/AboutCTA";
@@ -10,7 +11,6 @@ import { AboutMissionValues } from "@/sections/about/AboutMissionValues";
 import { AboutOverview } from "@/sections/about/AboutOverview";
 import { AboutSafetySustainability } from "@/sections/about/AboutSafetySustainability";
 import { AboutStats } from "@/sections/about/AboutStats";
-import { getClientPartners } from "@/lib/content/clients";
 
 export default async function AboutPage() {
   const clients = await getClientPartners();

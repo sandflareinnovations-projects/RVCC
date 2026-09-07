@@ -3,11 +3,11 @@ import { Metadata } from "next";
 import { ClientLogos } from "@/components/common/ClientLogos";
 import { FloatingContact } from "@/components/common/FloatingContact";
 import { Footer } from "@/components/layout/Footer";
+import { getClientPartners } from "@/lib/content/clients";
+import { getProjects } from "@/lib/content/projects";
 import { ProjectHero } from "@/sections/projects/ProjectHero";
 import { ProjectList } from "@/sections/projects/ProjectList";
 import { ProjectMetrics } from "@/sections/projects/ProjectMetrics";
-import { getProjects } from "@/lib/content/projects";
-import { getClientPartners } from "@/lib/content/clients";
 
 export const metadata: Metadata = {
   title: "Projects | RVCC - Our Architectural Portfolio",

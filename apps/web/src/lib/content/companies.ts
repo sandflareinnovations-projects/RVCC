@@ -1,6 +1,6 @@
 import "server-only";
 
-import { concernLogos as FALLBACK_LOGOS, type ConcernLogo } from "@/data/home/csr";
+import { type ConcernLogo,concernLogos as FALLBACK_LOGOS } from "@/data/home/csr";
 
 export interface SisterCompanyItem {
   id: string;

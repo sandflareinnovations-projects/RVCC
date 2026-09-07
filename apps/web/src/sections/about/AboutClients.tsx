@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ClientLogos, ClientLogoItem } from "@/components/common/ClientLogos";
+import { ClientLogoItem,ClientLogos } from "@/components/common/ClientLogos";
 import { Button } from "@/components/ui/Button";
 
 export const AboutClients = ({

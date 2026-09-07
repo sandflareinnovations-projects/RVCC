@@ -2,19 +2,18 @@
 
 import { useState } from "react";
 import {
-  HiOutlineDownload,
-  HiOutlineClipboardCopy,
   HiOutlineCheck,
-  HiOutlineShare,
-  HiOutlineExternalLink,
+  HiOutlineClipboardCopy,
   HiOutlineDocumentText,
+  HiOutlineDownload,
+  HiOutlineExternalLink,
   HiOutlineFolder,
+  HiOutlineShare,
 } from "react-icons/hi";
 import {
   MdOutlineMusicNote,
-  MdOutlineVideocam,
-  MdOutlineImage,
 } from "react-icons/md";
+
 import type { PublicMediaFile } from "@/lib/content/media";
 
 function formatBytes(bytes: number, decimals = 1) {

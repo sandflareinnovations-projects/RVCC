@@ -1,13 +1,13 @@
 import "server-only";
 
+import type { GallaryProject } from "@/data/gallary";
+import type { DetailedProject } from "@/data/projects/detailed";
 import {
   GALLERY_CACHE_TAG,
   GALLERY_REVALIDATE_SECONDS,
   PROJECTS_CACHE_TAG,
   PROJECTS_REVALIDATE_SECONDS,
 } from "@/lib/cache";
-import type { DetailedProject } from "@/data/projects/detailed";
-import type { GallaryProject } from "@/data/gallary";
 
 function apiBase(): string {
   return (process.env.API_URL || "https://rvcc-api.rvcc.workers.dev").replace(/\/$/, "");

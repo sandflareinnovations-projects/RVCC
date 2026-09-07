@@ -15,11 +15,11 @@ import {
   HiOutlineWrench,
 } from "react-icons/hi2";
 
+import { Service,services as STATIC_SERVICES } from "@/data/services";
 import {
   SERVICES_CACHE_TAG,
   SERVICES_REVALIDATE_SECONDS,
 } from "@/lib/cache";
-import { services as STATIC_SERVICES, Service } from "@/data/services";
 
 function apiBase(): string {
   return (process.env.API_URL || "https://rvcc-api.rvcc.workers.dev").replace(/\/$/, "");

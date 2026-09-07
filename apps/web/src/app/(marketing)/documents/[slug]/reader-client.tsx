@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+
 import type { WebDocumentItem } from "@/lib/content/documents";
 
 const FlipbookReader = dynamic(

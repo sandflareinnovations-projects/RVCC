@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { PROJECTS as DEFAULT_PROJECTS, DetailedProject } from "../data/projects/detailed";
+import { DetailedProject,PROJECTS as DEFAULT_PROJECTS } from "../data/projects/detailed";
 
 export const useProjectFilters = (initialProjects?: DetailedProject[]) => {
   const [searchQuery, setSearchQuery] = useState("");
