@@ -41,6 +41,9 @@ export async function handlePublicSisterCompaniesRequest(
   }
 
   try {
+    if (request.method !== "GET" && request.method !== "HEAD") {
+      return json(env, request, { error: "Method not allowed" }, 405);
+    }
     return await handlePublicSisterCompaniesList(null, env, request);
   } catch (err) {
     console.error("[public_sister_companies] error:", err);

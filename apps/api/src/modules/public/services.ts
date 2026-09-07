@@ -134,12 +134,16 @@ export async function handlePublicServicesRequest(request: Request, env: Env): P
   const path = url.pathname.replace(/\/$/, "");
 
   try {
-    if (path === "/services" && request.method === "GET") {
+    if (request.method !== "GET" && request.method !== "HEAD") {
+      return json(env, request, { error: "Method not allowed" }, 405);
+    }
+
+    if (path === "/services") {
       return await handlePublicServicesList(null, env, request);
     }
 
     const detailMatch = path.match(/^\/services\/([^/]+)$/);
-    if (detailMatch && request.method === "GET") {
+    if (detailMatch) {
       const slug = decodeURIComponent(detailMatch[1]!);
       return await handlePublicServiceDetail(null, env, request, slug);
     }
