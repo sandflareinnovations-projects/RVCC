@@ -2,8 +2,8 @@ import { serve } from "@hono/node-server";
 
 import { createApp } from "./app";
 import { loadEnv } from "./config/env";
-import { processExpiredRequirements } from "./modules/bidding/deadline-worker";
-import { syncExchangeRates } from "./modules/bidding/fx";
+import { processExpiredRequirements } from "./modules/sourcing/bidding/deadline.worker";
+import { syncExchangeRates } from "./modules/sourcing/bidding/fx.service";
 
 const env = loadEnv();
 const app = createApp(env);

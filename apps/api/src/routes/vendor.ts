@@ -1,22 +1,24 @@
 import type { Env } from "../config/env";
 import { corsHeaders, json } from "../lib/http";
 import {
+  handleVendorLogin as handleLogin,
+  handleVendorLogout as handleLogout,
+  handleVendorMe as handleMe,
+  handleVendorPassword as handlePassword,
+} from "../modules/auth/controllers/vendor-auth.controller";
+import {
   handleDashboard,
-  handleLogin,
-  handleLogout,
-  handleMe,
-  handlePassword,
   handleQuoteAttachmentDelete,
   handleQuoteAttachmentUpload,
   handleQuoteSave,
   handleRequirementGet,
   handleRequirementsList,
-} from "../modules/vendor/handlers";
+} from "../modules/vendors/portal/portal.controller";
 import {
   handleVendorNotificationsGet,
   handleVendorNotificationsMarkRead,
-} from "../modules/vendor/notifications";
-import { handleVendorLiveBids } from "../modules/bidding/live-bids";
+} from "../modules/vendors/portal/portal-notifications.controller";
+import { handleVendorLiveBids } from "../modules/sourcing/bidding/live-bids.controller";
 import { enforceRateLimit } from "../lib/rate-limit";
 
 /**

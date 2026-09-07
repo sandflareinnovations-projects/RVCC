@@ -1,59 +1,17 @@
 import type { Env } from "../config/env";
 import { corsHeaders, json } from "../lib/http";
-import { createSql } from "../modules/admin/db";
-import { releaseSql } from "../lib/sql";
-import { requireAdmin } from "../modules/admin/auth";
+import { createSql, releaseSql } from "../lib/sql";
+import { requireAdmin } from "../modules/auth/services/admin-auth.service";
 import {
-  handleCareerCreate,
-  handleCareerDelete,
-  handleCareerApplicationsList,
-  handleCareerGet,
-  handleCareerPatch,
-  handleCareersList,
-  handleDashboard,
-  handleIndustriesList,
   handleLogin,
   handleLogout,
   handleMe,
-  handleRegistrationDelete,
-  handleRegistrationGet,
-  handleRegistrationReview,
-  handleRegistrationsList,
-  handleRequirementAward,
-  handleRequirementCreate,
-  handleRequirementDelete,
-  handleRequirementGet,
-  handleRequirementUpdate,
-  handleRequirementsList,
-  handleVendorCreate,
-  handleVendorGet,
-  handleVendorPatch,
-  handleVendorResetPassword,
-  handleVendorsList,
-} from "../modules/admin/handlers";
+} from "../modules/auth/controllers/admin-auth.controller";
 import {
   handleAdminChangePasswordWithCurrent,
   handleAdminChangePasswordRequestOtp,
   handleAdminChangePasswordVerify,
-} from "../modules/admin/change-password";
-import {
-  handleAdminNotificationsGet,
-  handleAdminNotificationsMarkRead,
-  handleAdminPushSubscribe,
-  handleAdminPushUnsubscribe,
-} from "../modules/admin/notifications";
-import {
-  handleProcurementCreate,
-  handleProcurementDelete,
-  handleProcurementGet,
-  handleProcurementList,
-  handleProcurementReview,
-} from "../modules/admin/procurement";
-import {
-  handleRequirementExportCsv,
-  handleRegistrationsExportCsv,
-} from "../modules/admin/export";
-import { handleAdminLiveBids } from "../modules/bidding/live-bids";
+} from "../modules/auth/controllers/password.controller";
 import {
   handleStaffCreate,
   handleStaffDelete,
@@ -61,7 +19,56 @@ import {
   handleStaffOtpRequest,
   handleStaffPasswordReset,
   handleStaffUpdate,
-} from "../modules/admin/staff";
+} from "../modules/auth/controllers/staff.controller";
+import {
+  handleCareerCreate,
+  handleCareerDelete,
+  handleCareerApplicationsList,
+  handleCareerGet,
+  handleCareerPatch,
+  handleCareersList,
+} from "../modules/careers/controllers/careers.admin.controller";
+import {
+  handleDashboard,
+  handleIndustriesList,
+} from "../modules/system/controllers/dashboard.admin.controller";
+import {
+  handleAdminNotificationsGet,
+  handleAdminNotificationsMarkRead,
+  handleAdminPushSubscribe,
+  handleAdminPushUnsubscribe,
+} from "../modules/system/controllers/notification.admin.controller";
+import {
+  handleRegistrationsList,
+  handleRegistrationGet,
+  handleRegistrationReview,
+  handleRegistrationDelete,
+  handleRegistrationsExportCsv,
+} from "../modules/vendors/registrations/registrations.controller";
+import {
+  handleVendorsList,
+  handleVendorGet,
+  handleVendorPatch,
+  handleVendorResetPassword,
+  handleVendorCreate,
+} from "../modules/vendors/accounts/accounts.controller";
+import {
+  handleRequirementsList,
+  handleRequirementGet,
+  handleRequirementCreate,
+  handleRequirementUpdate,
+  handleRequirementDelete,
+  handleRequirementAward,
+  handleRequirementExportCsv,
+} from "../modules/sourcing/controllers/sourcing.admin.controller";
+import { handleAdminLiveBids } from "../modules/sourcing/bidding/live-bids.controller";
+import {
+  handleProcurementCreate,
+  handleProcurementDelete,
+  handleProcurementGet,
+  handleProcurementList,
+  handleProcurementReview,
+} from "../modules/procurement/controllers/procurement.admin.controller";
 import { enforceRateLimit } from "../lib/rate-limit";
 
 /**
@@ -178,7 +185,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
     if (path === "/bidding/fx-sync" && request.method === "POST") {
       const { deny } = await requireAdmin(sql, env, request, "REVIEWER");
       if (deny) return deny;
-      const { syncExchangeRates } = await import("../modules/bidding/fx");
+      const { syncExchangeRates } = await import("../modules/sourcing/bidding/fx.service");
       await syncExchangeRates();
       return json(env, request, { ok: true, message: "Exchange rates synchronized successfully" });
     }
@@ -316,15 +323,15 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
 
     // Hero Slides Content Routes
     if (path === "/hero-slides" && request.method === "GET") {
-      const { handleAdminHeroSlidesList } = await import("../modules/admin/hero");
+      const { handleAdminHeroSlidesList } = await import("../modules/content/hero/hero.controller");
       return await handleAdminHeroSlidesList(sql, env, request);
     }
     if (path === "/hero-slides" && request.method === "POST") {
-      const { handleAdminHeroSlideCreate } = await import("../modules/admin/hero");
+      const { handleAdminHeroSlideCreate } = await import("../modules/content/hero/hero.controller");
       return await handleAdminHeroSlideCreate(sql, env, request);
     }
     if (path === "/hero-slides/reorder" && request.method === "PUT") {
-      const { handleAdminHeroSlidesReorder } = await import("../modules/admin/hero");
+      const { handleAdminHeroSlidesReorder } = await import("../modules/content/hero/hero.controller");
       return await handleAdminHeroSlidesReorder(sql, env, request);
     }
     const heroOne = path.match(/^\/hero-slides\/([^/]+)$/);
@@ -334,7 +341,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
         handleAdminHeroSlideGet,
         handleAdminHeroSlideUpdate,
         handleAdminHeroSlideDelete,
-      } = await import("../modules/admin/hero");
+      } = await import("../modules/content/hero/hero.controller");
       if (request.method === "GET") return await handleAdminHeroSlideGet(sql, env, request, id);
       if (request.method === "PUT" || request.method === "PATCH") {
         return await handleAdminHeroSlideUpdate(sql, env, request, id);
@@ -344,15 +351,15 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
 
     // Client Partner Content Routes
     if (path === "/clients" && request.method === "GET") {
-      const { handleAdminClientsList } = await import("../modules/admin/clients");
+      const { handleAdminClientsList } = await import("../modules/content/clients/clients.controller");
       return await handleAdminClientsList(sql, env, request);
     }
     if (path === "/clients" && request.method === "POST") {
-      const { handleAdminClientCreate } = await import("../modules/admin/clients");
+      const { handleAdminClientCreate } = await import("../modules/content/clients/clients.controller");
       return await handleAdminClientCreate(sql, env, request);
     }
     if (path === "/clients/reorder" && request.method === "PUT") {
-      const { handleAdminClientsReorder } = await import("../modules/admin/clients");
+      const { handleAdminClientsReorder } = await import("../modules/content/clients/clients.controller");
       return await handleAdminClientsReorder(sql, env, request);
     }
     const clientOne = path.match(/^\/clients\/([^/]+)$/);
@@ -362,7 +369,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
         handleAdminClientGet,
         handleAdminClientUpdate,
         handleAdminClientDelete,
-      } = await import("../modules/admin/clients");
+      } = await import("../modules/content/clients/clients.controller");
       if (request.method === "GET") return await handleAdminClientGet(sql, env, request, id);
       if (request.method === "PUT" || request.method === "PATCH") {
         return await handleAdminClientUpdate(sql, env, request, id);
@@ -372,15 +379,15 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
 
     // Sister Concern Companies Content Routes
     if (path === "/companies" && request.method === "GET") {
-      const { handleAdminCompaniesList } = await import("../modules/admin/companies");
+      const { handleAdminCompaniesList } = await import("../modules/content/companies/companies.controller");
       return await handleAdminCompaniesList(sql, env, request);
     }
     if (path === "/companies" && request.method === "POST") {
-      const { handleAdminCompanyCreate } = await import("../modules/admin/companies");
+      const { handleAdminCompanyCreate } = await import("../modules/content/companies/companies.controller");
       return await handleAdminCompanyCreate(sql, env, request);
     }
     if (path === "/companies/reorder" && request.method === "PUT") {
-      const { handleAdminCompaniesReorder } = await import("../modules/admin/companies");
+      const { handleAdminCompaniesReorder } = await import("../modules/content/companies/companies.controller");
       return await handleAdminCompaniesReorder(sql, env, request);
     }
     const companyOne = path.match(/^\/companies\/([^/]+)$/);
@@ -390,7 +397,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
         handleAdminCompanyGet,
         handleAdminCompanyUpdate,
         handleAdminCompanyDelete,
-      } = await import("../modules/admin/companies");
+      } = await import("../modules/content/companies/companies.controller");
       if (request.method === "GET") return await handleAdminCompanyGet(sql, env, request, id);
       if (request.method === "PUT" || request.method === "PATCH") {
         return await handleAdminCompanyUpdate(sql, env, request, id);
@@ -400,15 +407,15 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
 
     // Projects Content Routes
     if (path === "/projects" && request.method === "GET") {
-      const { handleAdminProjectsList } = await import("../modules/admin/projects");
+      const { handleAdminProjectsList } = await import("../modules/content/projects/projects.controller");
       return await handleAdminProjectsList(sql, env, request);
     }
     if (path === "/projects" && request.method === "POST") {
-      const { handleAdminProjectCreate } = await import("../modules/admin/projects");
+      const { handleAdminProjectCreate } = await import("../modules/content/projects/projects.controller");
       return await handleAdminProjectCreate(sql, env, request);
     }
     if (path === "/projects/reorder" && request.method === "PUT") {
-      const { handleAdminProjectsReorder } = await import("../modules/admin/projects");
+      const { handleAdminProjectsReorder } = await import("../modules/content/projects/projects.controller");
       return await handleAdminProjectsReorder(sql, env, request);
     }
     const projectOne = path.match(/^\/projects\/([^/]+)$/);
@@ -418,7 +425,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
         handleAdminProjectGet,
         handleAdminProjectUpdate,
         handleAdminProjectDelete,
-      } = await import("../modules/admin/projects");
+      } = await import("../modules/content/projects/projects.controller");
       if (request.method === "GET") return await handleAdminProjectGet(sql, env, request, id);
       if (request.method === "PUT" || request.method === "PATCH") {
         return await handleAdminProjectUpdate(sql, env, request, id);
@@ -428,15 +435,15 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
 
     // Gallery Content Routes
     if (path === "/gallery" && request.method === "GET") {
-      const { handleAdminGalleryImagesList } = await import("../modules/admin/gallery");
+      const { handleAdminGalleryImagesList } = await import("../modules/content/gallery/gallery.controller");
       return await handleAdminGalleryImagesList(sql, env, request);
     }
     if (path === "/gallery" && request.method === "POST") {
-      const { handleAdminGalleryImageCreate } = await import("../modules/admin/gallery");
+      const { handleAdminGalleryImageCreate } = await import("../modules/content/gallery/gallery.controller");
       return await handleAdminGalleryImageCreate(sql, env, request);
     }
     if (path === "/gallery/reorder" && request.method === "PUT") {
-      const { handleAdminGalleryImagesReorder } = await import("../modules/admin/gallery");
+      const { handleAdminGalleryImagesReorder } = await import("../modules/content/gallery/gallery.controller");
       return await handleAdminGalleryImagesReorder(sql, env, request);
     }
     const galleryOne = path.match(/^\/gallery\/([^/]+)$/);
@@ -445,7 +452,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
       const {
         handleAdminGalleryImageUpdate,
         handleAdminGalleryImageDelete,
-      } = await import("../modules/admin/gallery");
+      } = await import("../modules/content/gallery/gallery.controller");
       if (request.method === "PUT" || request.method === "PATCH") {
         return await handleAdminGalleryImageUpdate(sql, env, request, id);
       }
@@ -454,15 +461,15 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
 
     // Services Content Routes
     if (path === "/services" && request.method === "GET") {
-      const { handleAdminServicesList } = await import("../modules/admin/services");
+      const { handleAdminServicesList } = await import("../modules/content/services/services.controller");
       return await handleAdminServicesList(sql, env, request);
     }
     if (path === "/services" && request.method === "POST") {
-      const { handleAdminServiceCreate } = await import("../modules/admin/services");
+      const { handleAdminServiceCreate } = await import("../modules/content/services/services.controller");
       return await handleAdminServiceCreate(sql, env, request);
     }
     if (path === "/services/reorder" && request.method === "PUT") {
-      const { handleAdminServicesReorder } = await import("../modules/admin/services");
+      const { handleAdminServicesReorder } = await import("../modules/content/services/services.controller");
       return await handleAdminServicesReorder(sql, env, request);
     }
     const serviceOne = path.match(/^\/services\/([^/]+)$/);
@@ -472,7 +479,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
         handleAdminServiceGet,
         handleAdminServiceUpdate,
         handleAdminServiceDelete,
-      } = await import("../modules/admin/services");
+      } = await import("../modules/content/services/services.controller");
       if (request.method === "GET") return await handleAdminServiceGet(sql, env, request, id);
       if (request.method === "PUT" || request.method === "PATCH") {
         return await handleAdminServiceUpdate(sql, env, request, id);
@@ -482,25 +489,25 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
 
     // Public Media Upload for Admin Content (Gallery, Hero, Projects, Services, etc.)
     if (path === "/content/upload" && request.method === "POST") {
-      const { handleAdminContentMediaUpload } = await import("../modules/admin/hero");
+      const { handleAdminContentMediaUpload } = await import("../modules/content/media/media.controller");
       return await handleAdminContentMediaUpload(sql, env, request);
     }
 
     // ── Company Documents Content Routes ────────────────────────────────────
     if (path === "/documents" && request.method === "GET") {
-      const { handleAdminDocumentsList } = await import("../modules/admin/documents");
+      const { handleAdminDocumentsList } = await import("../modules/documents/controllers/documents.admin.controller");
       return await handleAdminDocumentsList(sql, env, request);
     }
     if (path === "/documents" && request.method === "POST") {
-      const { handleAdminDocumentCreate } = await import("../modules/admin/documents");
+      const { handleAdminDocumentCreate } = await import("../modules/documents/controllers/documents.admin.controller");
       return await handleAdminDocumentCreate(sql, env, request);
     }
     if (path === "/documents/reorder" && request.method === "PUT") {
-      const { handleAdminDocumentsReorder } = await import("../modules/admin/documents");
+      const { handleAdminDocumentsReorder } = await import("../modules/documents/controllers/documents.admin.controller");
       return await handleAdminDocumentsReorder(sql, env, request);
     }
     if (path === "/documents/upload" && request.method === "POST") {
-      const { handleAdminDocumentUpload } = await import("../modules/admin/documents");
+      const { handleAdminDocumentUpload } = await import("../modules/documents/controllers/documents.admin.controller");
       return await handleAdminDocumentUpload(sql, env, request);
     }
     const documentOne = path.match(/^\/documents\/([^/]+)$/);
@@ -510,7 +517,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
         handleAdminDocumentGet,
         handleAdminDocumentUpdate,
         handleAdminDocumentDelete,
-      } = await import("../modules/admin/documents");
+      } = await import("../modules/documents/controllers/documents.admin.controller");
       if (request.method === "GET") return await handleAdminDocumentGet(sql, env, request, id);
       if (request.method === "PUT" || request.method === "PATCH") {
         return await handleAdminDocumentUpdate(sql, env, request, id);
@@ -521,7 +528,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
     // ── File Manager (Folders & Files) ───────────────────────────────────────
     if (path === "/folders") {
       const { handleAdminFoldersList, handleAdminFolderCreate } = await import(
-        "../modules/admin/files"
+        "../modules/file-manager/controllers/file-manager.admin.controller"
       );
       if (request.method === "GET") return await handleAdminFoldersList(sql, env, request);
       if (request.method === "POST") return await handleAdminFolderCreate(sql, env, request);
@@ -531,7 +538,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
     if (folderMatch) {
       const id = folderMatch[1];
       const { handleAdminFolderUpdate, handleAdminFolderDelete } = await import(
-        "../modules/admin/files"
+        "../modules/file-manager/controllers/file-manager.admin.controller"
       );
       if (request.method === "PUT" || request.method === "PATCH") {
         return await handleAdminFolderUpdate(sql, env, request, id);
@@ -542,12 +549,12 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
     }
 
     if (path === "/files") {
-      const { handleAdminFilesList } = await import("../modules/admin/files");
+      const { handleAdminFilesList } = await import("../modules/file-manager/controllers/file-manager.admin.controller");
       if (request.method === "GET") return await handleAdminFilesList(sql, env, request);
     }
 
     if (path === "/files/upload" && request.method === "POST") {
-      const { handleAdminFileUpload } = await import("../modules/admin/files");
+      const { handleAdminFileUpload } = await import("../modules/file-manager/controllers/file-manager.admin.controller");
       return await handleAdminFileUpload(sql, env, request);
     }
 
@@ -555,7 +562,7 @@ export async function handleAdminRequest(request: Request, env: Env): Promise<Re
     if (fileMatch) {
       const id = fileMatch[1];
       const { handleAdminFileUpdate, handleAdminFileDelete } = await import(
-        "../modules/admin/files"
+        "../modules/file-manager/controllers/file-manager.admin.controller"
       );
       if (request.method === "PUT" || request.method === "PATCH") {
         return await handleAdminFileUpdate(sql, env, request, id);

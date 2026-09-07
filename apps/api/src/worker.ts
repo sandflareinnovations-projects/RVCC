@@ -57,8 +57,8 @@ function toAppEnv(env: WorkerEnv): import("./config/env").Env {
   };
 }
 
-import { syncExchangeRates } from "./modules/bidding/fx";
-import { processExpiredRequirements } from "./modules/bidding/deadline-worker";
+import { syncExchangeRates } from "./modules/sourcing/bidding/fx.service";
+import { processExpiredRequirements } from "./modules/sourcing/bidding/deadline.worker";
 
 export default {
   async fetch(request: Request, env: WorkerEnv): Promise<Response> {

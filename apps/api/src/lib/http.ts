@@ -67,3 +67,11 @@ export function json(
 export function unauthorized(env: Env, request: Request): Response {
   return json(env, request, { error: "Unauthorized" }, 401);
 }
+
+export async function readJson<T = unknown>(request: Request): Promise<T | null> {
+  try {
+    return (await request.json()) as T;
+  } catch {
+    return null;
+  }
+}

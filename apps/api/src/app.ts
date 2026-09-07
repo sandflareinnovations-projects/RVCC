@@ -2,7 +2,7 @@ import { Hono } from "hono";
 
 import type { Env } from "./config/env";
 import { corsHeaders, json } from "./lib/http";
-import { createPublicRouter } from "./modules/public/public.router";
+import { createPublicRouter } from "./routes/public";
 import { handleAdminRequest } from "./routes/admin";
 import { handleEnquireRequest } from "./routes/enquire";
 import { handleHealthCheck } from "./routes/health";
