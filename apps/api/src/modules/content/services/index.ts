@@ -1,13 +1,10 @@
 /**
  * Website CMS Content Business Logic Services
  */
-export * from "@/modules/public/careers";
-export * from "@/modules/public/clients";
-export * from "@/modules/public/companies";
-export * from "@/modules/public/documents";
-export * from "@/modules/public/gallery";
-export * from "@/modules/public/hero";
-export * from "@/modules/public/media";
-export * from "@/modules/public/projects";
-export * from "@/modules/public/services";
-
+export * from "../hero/hero.service";
+export * from "../clients/clients.service";
+export * from "../companies/companies.service";
+export * from "../projects/projects.service";
+export * from "../services/services.service";
+export * from "../gallery/gallery.service";
+export * from "../media/media.service";
