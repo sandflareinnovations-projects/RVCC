@@ -1,10 +1,9 @@
 "use client";
 
+import type { GalleryImageDTO, ServiceDTO } from "@rvcc/types";
 import {
   AlertCircle,
-  ArrowLeft,
   Check,
-  CheckCircle2,
   ChevronLeft,
   Image as ImageIcon,
   Loader2,
@@ -22,7 +21,6 @@ import { useMemo, useRef, useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
 import { readApiError } from "@/lib/read-error";
-import type { GalleryImageDTO, ServiceDTO } from "@rvcc/types";
 
 export function ServiceDetailView({
   initialService,

@@ -1,10 +1,10 @@
 "use client";
 
+import type { ServiceDTO } from "@rvcc/types";
 import {
   AlertCircle,
   ArrowRight,
   ChevronLeft,
-  GripVertical,
   Image as ImageIcon,
   Loader2,
   Plus,
@@ -20,7 +20,6 @@ import { useMemo, useRef, useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
 import { readApiError } from "@/lib/read-error";
-import type { ServiceDTO } from "@rvcc/types";
 
 export function ServicesGrid({
   initialServices,
