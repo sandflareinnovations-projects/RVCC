@@ -1,6 +1,7 @@
 "use client";
 
-import { AlertCircle, Check, ChevronLeft, Edit3, Image as ImageIcon, Loader2, Trash2, UploadCloud } from "lucide-react";
+import type { HeroSlideDTO, HeroSlideInput } from "@rvcc/types";
+import { AlertCircle, ChevronLeft, Loader2, Trash2, UploadCloud } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,7 +9,6 @@ import { useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
 import { readApiError } from "@/lib/read-error";
-import type { HeroSlideDTO, HeroSlideInput } from "@rvcc/types";
 
 export function HeroSlideEditor({ initial }: { initial: Partial<HeroSlideDTO> }) {
   const router = useRouter();

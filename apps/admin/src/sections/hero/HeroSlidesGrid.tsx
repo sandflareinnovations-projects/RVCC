@@ -1,5 +1,6 @@
 "use client";
 
+import type { HeroSlideDTO } from "@rvcc/types";
 import { Check, GripVertical, Loader2, Pencil, Plus, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +9,6 @@ import { useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
 import { readApiError } from "@/lib/read-error";
-import type { HeroSlideDTO } from "@rvcc/types";
 
 export function HeroSlidesGrid({
   initialSlides,

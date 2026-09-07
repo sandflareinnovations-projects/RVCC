@@ -1,5 +1,6 @@
 "use client";
 
+import type { HeroSlideDTO } from "@rvcc/types";
 import { Check, Loader2, Pencil, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -7,7 +8,6 @@ import { useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
 import { readApiError } from "@/lib/read-error";
-import type { HeroSlideDTO } from "@rvcc/types";
 
 export function HeroSlideRowActions({
   slide,
