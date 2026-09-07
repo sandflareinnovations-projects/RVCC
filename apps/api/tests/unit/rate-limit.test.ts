@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { enforceRateLimit } from "./rate-limit";
-import type { Env } from "../config/env";
+import { enforceRateLimit } from "../../src/lib/rate-limit";
+import type { Env } from "../../src/config/env";
 
 const mockEnv: Env = {
   DATABASE_URL: "postgresql://mock:mock@localhost:5432/mock",

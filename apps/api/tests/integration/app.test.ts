@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createApp } from "./app";
-import type { Env } from "./config/env";
+import { createApp } from "../../src/app";
+import type { Env } from "../../src/config/env";
 
 const mockEnv: Env = {
   DATABASE_URL: "postgresql://mock:mock@localhost:5432/mock",

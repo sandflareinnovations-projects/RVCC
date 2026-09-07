@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { generateTempPassword, hashPassword, verifyPassword } from "./password";
+import { generateTempPassword, hashPassword, verifyPassword } from "../../src/lib/password";
 
 test("hash and verify a password", async () => {
   const hash = await hashPassword("correct horse battery");

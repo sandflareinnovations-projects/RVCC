@@ -6,7 +6,7 @@ import {
   sanitizeFileName,
   storageKeyForCareer,
   storageKeyForQuote,
-} from "./storage";
+} from "../../src/lib/storage";
 
 describe("QA Security Tests: File Upload & Storage Key Sanitization", () => {
   describe("Path Traversal & Filename Sanitization", () => {

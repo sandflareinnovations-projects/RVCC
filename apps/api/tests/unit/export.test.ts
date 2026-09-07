@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { sanitizeCsvCell, toCsvRow } from "./export";
+import { sanitizeCsvCell, toCsvRow } from "../../src/modules/admin/export";
 
 describe("QA Security Tests: CSV Injection Mitigation", () => {
   it("should escape regular strings safely", () => {

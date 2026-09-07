@@ -1,9 +1,9 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { getRequirementRankings, buildVendorLiveBidsPayload } from "./ranking";
-import { prisma } from "../../lib/prisma";
+import { getRequirementRankings, buildVendorLiveBidsPayload } from "../../src/modules/bidding/ranking";
+import { prisma } from "../../src/lib/prisma";
 
 // Mock the prisma client for deterministic unit testing
-vi.mock("../../lib/prisma", () => ({
+vi.mock("../../src/lib/prisma", () => ({
   prisma: {
     requirement: {
       findUnique: vi.fn(),
