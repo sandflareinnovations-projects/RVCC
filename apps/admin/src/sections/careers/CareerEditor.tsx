@@ -2,31 +2,20 @@
 
 import {
   AlertCircle,
-  ArrowRight,
   Briefcase,
-  Building2,
   Check,
-  ChevronDown,
   ChevronLeft,
-  Clock,
-  ExternalLink,
   Eye,
-  EyeOff,
   Globe,
-  HelpCircle,
-  Info,
-  ListPlus,
   Loader2,
   MapPin,
   Plus,
   Sparkles,
-  Tag,
-  Trash2,
   X,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useId, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { CustomSelect } from "@/components/ui/custom-select";
 import { Modal } from "@/components/ui/modal";

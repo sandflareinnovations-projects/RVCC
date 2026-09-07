@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Clock, Download, Eye, FileText, Mail, Phone, User, Users, X } from "lucide-react";
+import { Calendar, Clock, Download, Eye, FileText, Mail, Phone, User, Users } from "lucide-react";
 import { useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
