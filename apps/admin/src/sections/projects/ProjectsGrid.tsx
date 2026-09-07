@@ -1,9 +1,9 @@
 "use client";
 
+import type { ProjectDTO } from "@rvcc/types";
 import {
   Check,
   ChevronLeft,
-  Eye,
   GripVertical,
   Image as ImageIcon,
   Loader2,
@@ -20,7 +20,6 @@ import { useMemo, useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
 import { readApiError } from "@/lib/read-error";
-import type { ProjectDTO } from "@rvcc/types";
 
 export function ProjectsGrid({
   initialProjects,

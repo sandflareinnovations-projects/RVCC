@@ -1,14 +1,12 @@
 "use client";
 
+import type { GalleryImageDTO, ProjectDTO, ProjectInput, ProjectStatus } from "@rvcc/types";
 import {
   AlertCircle,
   Check,
   ChevronLeft,
-  Eye,
-  GripVertical,
   Image as ImageIcon,
   Loader2,
-  Pencil,
   Plus,
   Star,
   Trash2,
@@ -22,7 +20,6 @@ import { useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
 import { readApiError } from "@/lib/read-error";
-import type { GalleryImageDTO, ProjectDTO, ProjectInput, ProjectStatus } from "@rvcc/types";
 
 const STATUS_OPTIONS: ProjectStatus[] = ["Completed", "In Progress", "Upcoming"];
 
