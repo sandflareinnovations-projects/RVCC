@@ -1,4 +1,4 @@
 /**
  * Procurement & Requirements HTTP Controllers
  */
-export * from "../../admin/procurement";
+export * from "./procurement.admin.controller";

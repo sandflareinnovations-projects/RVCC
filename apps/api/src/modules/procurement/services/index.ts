@@ -1,8 +1,4 @@
 /**
- * Procurement & Requirements Business Logic Services
+ * Procurement Business Logic Services
  */
-export * from "../../admin/award";
-export * from "../../admin/requirement-input";
-export * from "../../admin/vendor-input";
-export * from "../../admin/export";
-export * from "../../admin/notify";
+export * from "./procurement.service";
