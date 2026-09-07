@@ -1,37 +1,29 @@
 "use client";
 
+import type { CompanyDocumentDTO, DocumentCategory } from "@rvcc/types";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  FileText,
-  Upload,
-  Plus,
-  Search,
+  AlertCircle,
+  BookOpen,
   Check,
-  X,
-  Trash2,
   Edit2,
   ExternalLink,
-  Copy,
-  Eye,
-  Lock,
-  Unlock,
-  BookOpen,
-  ArrowUpDown,
-  Download,
-  Share2,
-  AlertCircle,
-  Loader2,
   FileCheck2,
+  FileText,
   HardDrive,
-  Layers,
-  Sparkles,
+  Loader2,
+  Lock,
+  Plus,
+  Search,
+  Trash2,
+  Upload,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useMemo, useRef } from "react";
+import React, { useMemo, useRef,useState } from "react";
 
 import { optimizeImageForUpload } from "@/lib/image-optimizer";
-import type { CompanyDocumentDTO, DocumentCategory } from "@rvcc/types";
 
 interface DocumentsManagerProps {
   initialDocuments: CompanyDocumentDTO[];

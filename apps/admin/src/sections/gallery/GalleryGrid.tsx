@@ -1,5 +1,6 @@
 "use client";
 
+import type { GalleryImageDTO, ProjectDTO } from "@rvcc/types";
 import {
   ArrowRight,
   ChevronDown,
@@ -10,7 +11,6 @@ import {
   Plus,
   Search,
   Trash2,
-  UploadCloud,
   X,
 } from "lucide-react";
 import Image from "next/image";
@@ -19,9 +19,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
-import { readApiError } from "@/lib/read-error";
 import { AVAILABLE_SERVICES } from "@/sections/projects/ProjectEditor";
-import type { GalleryImageDTO, ProjectDTO } from "@rvcc/types";
 
 export function GalleryGrid({
   initialImages,

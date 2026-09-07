@@ -1,39 +1,37 @@
 "use client";
 
 import {
+  AlertCircle,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  Download,
+  Edit2,
+  ExternalLink,
+  Eye,
+  File as GenericFileIcon,
+  FileText,
   Folder,
   FolderPlus,
-  Upload,
-  Search,
   Grid,
+  HardDrive,
+  Image as ImageIcon,
   List as ListIcon,
-  ChevronRight,
-  ChevronLeft,
-  MoreVertical,
-  Download,
-  Copy,
+  Loader2,
+  MessageCircle,
+  Music,
+  RefreshCw,
+  Search,
   Share2,
   Trash2,
-  ExternalLink,
-  Edit2,
-  FileText,
-  Image as ImageIcon,
+  Upload,
   Video,
-  Music,
-  File as GenericFileIcon,
-  Check,
   X,
-  AlertCircle,
-  Clock,
-  HardDrive,
-  Eye,
-  Loader2,
-  Home,
-  RefreshCw,
-  MessageCircle,
 } from "lucide-react";
 import Link from "next/link";
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef,useState } from "react";
+
 import { optimizeImageForUpload } from "@/lib/image-optimizer";
 
 export type ManagedFolderDTO = {
