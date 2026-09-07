@@ -1,5 +1,6 @@
 "use client";
 
+import type { SisterCompanyDTO, SisterCompanyInput } from "@rvcc/types";
 import { AlertCircle, Check, Loader2, UploadCloud, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -7,7 +8,6 @@ import { useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { optimizeImageForUpload } from "@/lib/image-optimizer";
 import { readApiError } from "@/lib/read-error";
-import type { SisterCompanyDTO, SisterCompanyInput } from "@rvcc/types";
 
 interface CompanyModalProps {
   open: boolean;

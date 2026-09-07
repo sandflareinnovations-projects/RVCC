@@ -1,6 +1,7 @@
 "use client";
 
-import { Check, ChevronLeft, ExternalLink, Globe, GripVertical, Loader2, Pencil, Plus, Search, Trash2, UserCheck, X } from "lucide-react";
+import type { ClientPartnerDTO } from "@rvcc/types";
+import { Check, ChevronLeft, ExternalLink, GripVertical, Loader2, Pencil, Plus, Search, Trash2, UserCheck, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,7 +9,7 @@ import { useMemo, useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
 import { readApiError } from "@/lib/read-error";
-import type { ClientPartnerDTO } from "@rvcc/types";
+
 import { ClientModal } from "./ClientModal";
 
 export function ClientsGrid({

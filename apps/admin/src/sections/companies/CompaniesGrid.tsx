@@ -1,5 +1,6 @@
 "use client";
 
+import type { SisterCompanyDTO } from "@rvcc/types";
 import {
   Building2,
   Check,
@@ -21,7 +22,7 @@ import { useMemo, useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
 import { readApiError } from "@/lib/read-error";
-import type { SisterCompanyDTO } from "@rvcc/types";
+
 import { CompanyModal } from "./CompanyModal";
 
 export function CompaniesGrid({

@@ -1,13 +1,13 @@
 "use client";
 
-import { AlertCircle, Check, Loader2, UploadCloud, X } from "lucide-react";
+import type { ClientPartnerDTO, ClientPartnerInput } from "@rvcc/types";
+import { AlertCircle, Check, Loader2, UploadCloud } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
 import { optimizeImageForUpload } from "@/lib/image-optimizer";
 import { readApiError } from "@/lib/read-error";
-import type { ClientPartnerDTO, ClientPartnerInput } from "@rvcc/types";
 
 interface ClientModalProps {
   open: boolean;
