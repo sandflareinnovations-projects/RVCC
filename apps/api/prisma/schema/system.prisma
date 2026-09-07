@@ -1,0 +1,71 @@
+// =========================================================================
+// SYSTEM DOMAIN (NOTIFICATIONS, PUSH SUBSCRIPTIONS & AUDIT LOGS)
+// =========================================================================
+
+enum NotificationType {
+  REQUIREMENT_POSTED
+  REQUIREMENT_UPDATED
+  QUOTE_SUBMITTED
+  QUOTE_AWARDED
+}
+
+model Notification {
+  id           String      @id @default(cuid())
+  vendorUserId String?
+  vendorUser   VendorUser? @relation(fields: [vendorUserId], references: [id], onDelete: Cascade)
+
+  adminId      String?
+  admin        AdminUser?  @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  type         NotificationType
+  title        String
+  body         String           @default("")
+  linkPath     String
+
+  readAt       DateTime?
+  createdAt    DateTime         @default(now())
+
+  @@index([vendorUserId, readAt])
+  @@index([adminId, readAt])
+}
+
+model PushSubscription {
+  id        String     @id @default(cuid())
+  endpoint  String     @unique
+  p256dh    String
+  auth      String
+  adminId   String?
+  admin     AdminUser? @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @updatedAt
+
+  @@index([adminId])
+}
+
+/// Unified, multi-actor immutable system audit log
+model AuditLog {
+  id             String      @id @default(cuid())
+
+  // Multi-actor accountability
+  adminId        String?
+  admin          AdminUser?  @relation(fields: [adminId], references: [id], onDelete: SetNull)
+
+  vendorId       String?
+  vendor         VendorUser? @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+
+  action         String
+  entityType     String
+  entityId       String
+  actorName      String      @default("")
+  actorRole      String      @default("")
+  previousStatus String?
+  newStatus      String?
+  note           String?
+  metadata       Json        @default("{}")
+  createdAt      DateTime    @default(now())
+
+  @@index([entityType, entityId])
+  @@index([adminId])
+  @@index([vendorId])
+  @@index([createdAt])
+}

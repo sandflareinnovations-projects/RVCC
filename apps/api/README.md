@@ -15,7 +15,7 @@ pnpm run deploy         # wrangler deploy only
 
 Cloudflare Workers Builds: root directory = this folder, install = `pnpm install`.
 
-Schema: `prisma/schema.prisma`. SQL upgrades: `sql/upgrades/` (`pnpm run db:upgrade-sourcing`).
+Schema: `prisma/schema/` (`pnpm run db:push` to sync database, `pnpm run db:generate` to regenerate client).
 
 ## Routes
 

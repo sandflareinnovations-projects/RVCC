@@ -1,0 +1,133 @@
+// =========================================================================
+// SOURCING & RFQ DOMAIN
+// =========================================================================
+
+enum RequirementStatus {
+  DRAFT
+  PENDING
+  OPEN
+  EVALUATING
+  AWARDED
+  CANCELLED
+  REJECTED
+}
+
+enum QuoteStatus {
+  DRAFT
+  SUBMITTED
+  ACCEPTED
+  REJECTED
+}
+
+model Requirement {
+  id               String            @id @default(cuid())
+  referenceNumber  String?           @unique
+  scopeOfWork      String
+  project          String
+  sellingPrice     Decimal?          @db.Decimal(14, 2)
+  currency         Currency          @default(SAR)
+
+  closesAt         DateTime
+  status           RequirementStatus @default(DRAFT)
+
+  createdByAdminId String
+  createdByAdmin   AdminUser         @relation("RequirementAuthor", fields: [createdByAdminId], references: [id], onDelete: Restrict)
+
+  awardedQuoteId   String?           @unique
+  awardedQuote     Quote?            @relation("AwardedQuote", fields: [awardedQuoteId], references: [id], onDelete: SetNull)
+  awardedAt        DateTime?
+  awardedByAdminId String?
+  awardedByAdmin   AdminUser?        @relation("RequirementAwarder", fields: [awardedByAdminId], references: [id], onDelete: SetNull)
+
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+  deletedAt        DateTime?         // Soft Deletion
+
+  invites          RequirementInvite[]
+  quotes           Quote[]
+
+  @@index([status, closesAt])
+  @@index([deletedAt])
+}
+
+model RequirementInvite {
+  id            String      @id @default(cuid())
+  requirementId String
+  requirement   Requirement @relation(fields: [requirementId], references: [id], onDelete: Restrict)
+
+  vendorUserId  String
+  vendorUser    VendorUser  @relation(fields: [vendorUserId], references: [id], onDelete: Restrict)
+
+  emailStatus   String      @default("PENDING")
+  emailError    String?
+  emailedAt     DateTime?
+
+  createdAt     DateTime    @default(now())
+
+  @@unique([requirementId, vendorUserId])
+  @@index([vendorUserId])
+}
+
+model Quote {
+  id            String      @id @default(cuid())
+  requirementId String
+  requirement   Requirement @relation(fields: [requirementId], references: [id], onDelete: Restrict)
+
+  vendorUserId  String
+  vendorUser    VendorUser  @relation(fields: [vendorUserId], references: [id], onDelete: Restrict)
+
+  // Multi-Currency Implementation
+  currency      Currency    @default(SAR)
+  exchangeRate  Decimal     @default(1.0) @db.Decimal(12, 6)
+  newPrice      Decimal?    @db.Decimal(14, 2)
+  amountSar     Decimal?    @db.Decimal(14, 2)
+
+  remarks       String      @default("")
+  status        QuoteStatus @default(DRAFT)
+  submittedAt   DateTime?
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @default(now()) @updatedAt
+  deletedAt     DateTime?   // Soft Deletion
+
+  awardedFor    Requirement? @relation("AwardedQuote")
+  revisions     QuoteRevision[]
+  attachments   QuoteAttachment[]
+
+  @@unique([requirementId, vendorUserId])
+  @@index([requirementId, status])
+  @@index([deletedAt])
+}
+
+model QuoteAttachment {
+  id          String    @id @default(cuid())
+  quoteId     String
+  quote       Quote     @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  fileName    String
+  fileUrl     String
+  fileSize    Int       @default(0)
+  mimeType    String    @default("application/pdf")
+  uploadedAt  DateTime  @default(now())
+
+  @@index([quoteId])
+}
+
+model QuoteRevision {
+  id            String      @id @default(cuid())
+  quoteId       String
+  quote         Quote       @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  requirementId String
+  vendorUserId  String
+  currency      Currency    @default(SAR)
+  exchangeRate  Decimal     @default(1.0) @db.Decimal(12, 6)
+  price         Decimal?    @db.Decimal(14, 2)
+  amountSar     Decimal?    @db.Decimal(14, 2)
+  remarks       String      @default("")
+  status        QuoteStatus @default(DRAFT)
+  createdAt     DateTime    @default(now())
+
+  @@index([quoteId])
+  @@index([requirementId])
+  @@index([vendorUserId])
+  @@index([createdAt])
+}

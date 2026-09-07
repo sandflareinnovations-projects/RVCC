@@ -1,0 +1,50 @@
+// =========================================================================
+// CAREERS DOMAIN (JOB POSTINGS & CANDIDATE APPLICATIONS)
+// =========================================================================
+
+model JobPosting {
+  id             String           @id @default(cuid())
+  slug           String           @unique
+  title          String
+  department     String           @default("")
+  location       String           @default("")
+  employmentType String           @default("Full-time")
+  description    String           @default("")
+  requirements   String[]         @default([])
+  benefits       String[]         @default([])
+  isRemote       Boolean          @default(false)
+  isPublished    Boolean          @default(false)
+  postedAt       DateTime         @default(now())
+  sortOrder      Int              @default(0)
+
+  createdById    String?
+  createdBy      AdminUser?       @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  applications   JobApplication[]
+
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now()) @updatedAt
+  deletedAt      DateTime?        // Soft Deletion
+
+  @@index([isPublished, sortOrder])
+  @@index([deletedAt])
+}
+
+model JobApplication {
+  id           String     @id @default(cuid())
+  jobPostingId String
+  jobPosting   JobPosting @relation(fields: [jobPostingId], references: [id], onDelete: Restrict)
+
+  fullName     String
+  email        String
+  phone        String     @default("")
+  cvFileName   String
+  cvFileUrl    String
+  cvMimeType   String     @default("application/pdf")
+
+  createdAt    DateTime   @default(now())
+  deletedAt    DateTime?  // Soft Deletion
+
+  @@index([jobPostingId])
+  @@index([deletedAt])
+}

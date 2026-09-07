@@ -1,0 +1,129 @@
+// =========================================================================
+// RBAC & ADMIN AUTHENTICATION DOMAIN
+// =========================================================================
+
+enum LoginStatus {
+  SUCCESS
+  FAILED
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique // e.g. "SUPER_ADMIN", "PROCUREMENT_MANAGER", "VIEWER"
+  description String   @default("")
+  isSystem    Boolean  @default(false)
+
+  admins      AdminUser[]
+  permissions RolePermission[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  deletedAt   DateTime?
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  slug        String   @unique // e.g. "procurement:approve", "vendors:read", "staff:manage"
+  description String   @default("")
+  category    String   @default("GENERAL")
+
+  roles       RolePermission[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  assignedAt   DateTime   @default(now())
+
+  @@id([roleId, permissionId])
+}
+
+model AdminUser {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String    @default("")
+  position       String    @default("")
+  department     String    @default("")
+  phone          String    @default("")
+  passwordHash   String
+  isActive       Boolean   @default(true)
+  lastLoginAt    DateTime?
+
+  // RBAC Link
+  roleId         String?
+  role           Role?     @relation(fields: [roleId], references: [id], onDelete: SetNull)
+
+  // Throttling
+  failedAttempts Int       @default(0)
+  lockedUntil    DateTime?
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now()) @updatedAt
+  deletedAt      DateTime? // Soft Deletion
+
+  sessions       AdminSession[]
+  otps           AdminOtp[]
+  loginHistory   AdminLoginHistory[]
+  auditLogs      AuditLog[]
+  reviewedRegs   SupplierRegistration[]
+  jobPostings    JobPosting[]
+  requirements   Requirement[]          @relation("RequirementAuthor")
+  awardedReqs    Requirement[]          @relation("RequirementAwarder")
+  notifications  Notification[]
+  purchaseReqs   PurchaseRequest[]
+  pushSubscriptions PushSubscription[]
+
+  @@index([email])
+  @@index([roleId])
+  @@index([deletedAt])
+}
+
+model AdminSession {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  adminId   String
+  admin     AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  userAgent String    @default("")
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([adminId])
+}
+
+/// Strict foreign-key bound Admin OTP table
+model AdminOtp {
+  id         String    @id @default(cuid())
+  adminId    String
+  admin      AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  action     String    @default("STAFF_MANAGEMENT") // e.g. "STAFF_MANAGEMENT", "PASSWORD_RESET"
+  codeHash   String
+  attempts   Int       @default(0)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([adminId, action])
+  @@index([expiresAt])
+}
+
+/// Tracks comprehensive staff authentication attempts and security telemetry
+model AdminLoginHistory {
+  id            String      @id @default(cuid())
+  adminId       String
+  admin         AdminUser   @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  ipAddress     String
+  userAgent     String      @default("")
+  status        LoginStatus
+  failureReason String?     // e.g. "INVALID_CREDENTIALS", "ACCOUNT_LOCKED"
+  loginAt       DateTime    @default(now())
+
+  @@index([adminId, loginAt(sort: Desc)])
+}

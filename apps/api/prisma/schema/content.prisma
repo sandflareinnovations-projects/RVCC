@@ -1,0 +1,127 @@
+// =========================================================================
+// CMS & CONTENT DOMAIN (HERO, CLIENTS, SISTER COMPANIES, PROJECTS, SERVICES)
+// =========================================================================
+
+model HeroSlide {
+  id               String    @id @default(cuid())
+  badge            String    @default("Architecture & Design")
+  title1           String
+  title2           String
+  description      String
+  imageUrl         String
+  primaryBtnText   String?   @default("Explore Works")
+  primaryBtnLink   String?   @default("#projects")
+  secondaryBtnText String?   @default("E-Vendor Registration")
+  secondaryBtnLink String?   @default("/enquire/verify")
+  sortOrder        Int       @default(0)
+  isActive         Boolean   @default(true)
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now()) @updatedAt
+  deletedAt        DateTime? // Soft Deletion
+
+  @@index([isActive, sortOrder])
+  @@index([deletedAt])
+}
+
+model ClientPartner {
+  id         String    @id @default(cuid())
+  name       String
+  logoUrl    String
+  industry   String    @default("General")
+  websiteUrl String?
+  sortOrder  Int       @default(0)
+  isActive   Boolean   @default(true)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+  deletedAt  DateTime? // Soft Deletion
+
+  @@index([isActive, sortOrder])
+  @@index([deletedAt])
+}
+
+model SisterCompany {
+  id         String    @id @default(cuid())
+  name       String
+  logoUrl    String
+  industry   String    @default("Sister Concern")
+  websiteUrl String?
+  sortOrder  Int       @default(0)
+  isActive   Boolean   @default(true)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+  deletedAt  DateTime? // Soft Deletion
+
+  @@index([isActive, sortOrder])
+  @@index([deletedAt])
+}
+
+model Project {
+  id           String         @id @default(cuid())
+  slug         String         @unique
+  title        String
+  category     String         @default("Commercial Architecture")
+  serviceSlugs String[]       @default([]) // Links to services e.g. "cladding-works", "steel-metal-works"
+  client       String         @default("")
+  location     String         @default("Riyadh, KSA")
+  year         String         @default("2024")
+  status       String         @default("Completed") // "Completed" | "In Progress" | "Upcoming"
+  description  String         @default("")
+  coverImage   String         @default("")
+  scope        String[]       @default([])
+  sortOrder    Int            @default(0)
+  isActive     Boolean        @default(true)
+
+  gallery      GalleryImage[]
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now()) @updatedAt
+  deletedAt    DateTime?      // Soft Deletion
+
+  @@index([slug])
+  @@index([isActive, sortOrder])
+  @@index([deletedAt])
+}
+
+model GalleryImage {
+  id           String    @id @default(cuid())
+  projectId    String
+  project      Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  imageUrl     String
+  caption      String    @default("")
+  serviceSlugs String[]  @default([]) // Explicit services connected to this photo
+  isCover      Boolean   @default(false)
+  sortOrder    Int       @default(0)
+  isActive     Boolean   @default(true)
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt
+  deletedAt    DateTime? // Soft Deletion
+
+  @@index([projectId, sortOrder])
+  @@index([isActive])
+  @@index([deletedAt])
+}
+
+model Service {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  title           String
+  description     String    @default("")
+  longDescription String    @default("")
+  image           String    @default("")
+  iconName        String    @default("Wrench")
+  features        String[]  @default([])
+  sortOrder       Int       @default(0)
+  isActive        Boolean   @default(true)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now()) @updatedAt
+  deletedAt       DateTime? // Soft Deletion
+
+  @@index([slug])
+  @@index([isActive, sortOrder])
+  @@index([deletedAt])
+}

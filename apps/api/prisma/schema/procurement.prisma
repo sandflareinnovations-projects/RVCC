@@ -1,0 +1,96 @@
+// =========================================================================
+// PROCUREMENT DOMAIN
+// =========================================================================
+
+enum ProcurementStatus {
+  DRAFT
+  SUBMITTED
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  REVISION_REQUESTED
+}
+
+enum ProcurementPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model PurchaseRequest {
+  id              String              @id @default(cuid())
+  referenceNumber String              @unique
+  title           String
+  description     String              @default("")
+  department      String
+  requesterName   String
+  requesterEmail  String?
+  priority        ProcurementPriority @default(MEDIUM)
+  status          ProcurementStatus   @default(DRAFT)
+  requiredByDate  DateTime
+  currency        Currency            @default(SAR)
+  estimatedAmount Decimal             @default(0) @db.Decimal(14, 2)
+  costCenter      String?
+  adminNotes      String?
+
+  createdById     String?
+  createdBy       AdminUser?          @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @default(now()) @updatedAt
+  deletedAt       DateTime?           // Soft Deletion
+
+  items           PurchaseRequestItem[]
+  attachments     PurchaseRequestAttachment[]
+
+  @@index([status, priority])
+  @@index([department])
+  @@index([deletedAt])
+}
+
+model PurchaseRequestItem {
+  id                 String          @id @default(cuid())
+  purchaseRequestId  String
+  purchaseRequest    PurchaseRequest @relation(fields: [purchaseRequestId], references: [id], onDelete: Restrict)
+
+  name               String
+  category           String
+  quantity           Decimal         @db.Decimal(12, 2)
+  unit               String
+
+  // Multi-Currency Fields
+  currency           Currency        @default(SAR)
+  exchangeRate       Decimal         @default(1.0) @db.Decimal(12, 6)
+  estimatedUnitPrice Decimal         @db.Decimal(14, 2)
+  totalPrice         Decimal         @db.Decimal(14, 2)
+
+  preferredVendor    String?
+  notes              String?
+  sortOrder          Int             @default(0)
+
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @default(now()) @updatedAt
+  deletedAt          DateTime?       // Soft Deletion
+
+  @@index([purchaseRequestId, sortOrder])
+  @@index([deletedAt])
+}
+
+model PurchaseRequestAttachment {
+  id                String          @id @default(cuid())
+  purchaseRequestId String
+  purchaseRequest   PurchaseRequest @relation(fields: [purchaseRequestId], references: [id], onDelete: Restrict)
+
+  name              String
+  url               String
+  sizeBytes         Int             @default(0)
+  mimeType          String          @default("application/pdf")
+
+  uploadedAt        DateTime        @default(now())
+  deletedAt         DateTime?       // Soft Deletion
+
+  @@index([purchaseRequestId])
+  @@index([deletedAt])
+}

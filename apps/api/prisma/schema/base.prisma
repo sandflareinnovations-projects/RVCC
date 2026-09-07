@@ -1,0 +1,28 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters", "prismaSchemaFolder"]
+}
+
+// =========================================================================
+// GLOBAL CURRENCIES & EXCHANGE RATES
+// =========================================================================
+
+enum Currency {
+  SAR
+  USD
+  AED
+  INR
+  EUR
+}
+
+model ExchangeRate {
+  id        String   @id @default(cuid())
+  currency  Currency @unique
+  rateToSar Decimal  @db.Decimal(12, 6)
+  updatedAt DateTime @default(now()) @updatedAt
+}
