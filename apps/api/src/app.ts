@@ -2,7 +2,7 @@ import { Hono } from "hono";
 
 import type { Env } from "./config/env";
 import { corsHeaders, json } from "./lib/http";
-import { handlePublicCareersRequest } from "./modules/public/careers";
+import { createPublicRouter } from "./modules/public/public.router";
 import { handleAdminRequest } from "./routes/admin";
 import { handleEnquireRequest } from "./routes/enquire";
 import { handleHealthCheck } from "./routes/health";
@@ -36,61 +36,8 @@ export function createApp(env: Env) {
     return new Response(null, { status: 204, headers: corsHeaders(c.req.raw, env) });
   });
 
-  app.all("/careers", (c) => handlePublicCareersRequest(c.req.raw, env));
-  app.all("/careers/apply", (c) => handlePublicCareersRequest(c.req.raw, env));
-
-  app.all("/hero-slides", async (c) => {
-    const { handlePublicHeroRequest } = await import("./modules/public/hero");
-    return handlePublicHeroRequest(c.req.raw, env);
-  });
-
-  app.all("/clients", async (c) => {
-    const { handlePublicClientsRequest } = await import("./modules/public/clients");
-    return handlePublicClientsRequest(c.req.raw, env);
-  });
-
-  app.all("/sister-companies", async (c) => {
-    const { handlePublicSisterCompaniesRequest } = await import("./modules/public/companies");
-    return handlePublicSisterCompaniesRequest(c.req.raw, env);
-  });
-
-  app.all("/projects", async (c) => {
-    const { handlePublicProjectsRequest } = await import("./modules/public/projects");
-    return handlePublicProjectsRequest(c.req.raw, env);
-  });
-  app.all("/projects/*", async (c) => {
-    const { handlePublicProjectsRequest } = await import("./modules/public/projects");
-    return handlePublicProjectsRequest(c.req.raw, env);
-  });
-
-  app.all("/services", async (c) => {
-    const { handlePublicServicesRequest } = await import("./modules/public/services");
-    return handlePublicServicesRequest(c.req.raw, env);
-  });
-  app.all("/services/*", async (c) => {
-    const { handlePublicServicesRequest } = await import("./modules/public/services");
-    return handlePublicServicesRequest(c.req.raw, env);
-  });
-
-  app.all("/gallery", async (c) => {
-    const { handlePublicGalleryRequest } = await import("./modules/public/gallery");
-    return handlePublicGalleryRequest(c.req.raw, env);
-  });
-
-  app.all("/media/:id", async (c) => {
-    const { handlePublicMediaRequest } = await import("./modules/public/media");
-    return handlePublicMediaRequest(c.req.raw, env, c.req.param("id"));
-  });
-
-  app.all("/documents", async (c) => {
-    const { handlePublicDocumentsRequest } = await import("./modules/public/documents");
-    return handlePublicDocumentsRequest(c.req.raw, env);
-  });
-  app.all("/documents/*", async (c) => {
-    const { handlePublicDocumentsRequest } = await import("./modules/public/documents");
-    const slug = c.req.path.replace(/^\/documents\/?/, "");
-    return handlePublicDocumentsRequest(c.req.raw, env, slug);
-  });
+  const publicRouter = createPublicRouter(env);
+  app.route("/", publicRouter);
 
   app.all("/admin", (c) => handleAdminRequest(rewritePath(c.req.raw, "/admin"), env));
   app.all("/admin/*", (c) => handleAdminRequest(rewritePath(c.req.raw, "/admin"), env));
