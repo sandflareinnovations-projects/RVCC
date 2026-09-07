@@ -83,17 +83,25 @@ const SECTIONS = [
     href: "/content/careers",
     label: "Careers",
     description: "Post, edit, and manage job listings shown on the careers page.",
-    icon: FolderOpen,
+    icon: Briefcase,
     color: "bg-rose-50 text-rose-600",
     borderColor: "hover:border-rose-400",
   },
   {
     href: "/content/documents",
     label: "Documents",
-    description: "Upload and manage company PDFs, brochures, and certificates.",
+    description: "Upload and manage company publications, corporate profiles, and catalogs.",
     icon: FileArchive,
     color: "bg-indigo-50 text-indigo-600",
     borderColor: "hover:border-indigo-400",
+  },
+  {
+    href: "/content/files",
+    label: "File Manager",
+    description: "Cloud file explorer, R2 media storage, virtual folders, and shareable assets.",
+    icon: FolderOpen,
+    color: "bg-sky-50 text-sky-600",
+    borderColor: "hover:border-sky-400",
   },
   {
     href: "/content/quality-policy",
@@ -184,7 +192,7 @@ async function ContentStatsData() {
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       {[
-        { label: "Sections", value: "8", icon: Globe },
+        { label: "Sections", value: SECTIONS.length.toString(), icon: Globe },
         { label: "Published Jobs", value: published, icon: FolderOpen },
         { label: "Total Jobs", value: total, icon: Briefcase },
         { label: "Draft Jobs", value: total - published, icon: FileArchive },

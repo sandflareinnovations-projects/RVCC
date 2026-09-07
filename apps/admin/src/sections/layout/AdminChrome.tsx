@@ -52,7 +52,8 @@ const WEBSITE_NAV = [
   { href: "/content/clients", label: "Clients", icon: <UserCheck className={ICON} /> },
   { href: "/content/companies", label: "Our Companies", icon: <Building2 className={ICON} /> },
   { href: "/content/careers", label: "Careers", icon: <Briefcase className={ICON} /> },
-  { href: "/content/documents", label: "File Manager", icon: <FolderOpen className={ICON} /> },
+  { href: "/content/documents", label: "Documents", icon: <FileText className={ICON} /> },
+  { href: "/content/files", label: "File Manager", icon: <FolderOpen className={ICON} /> },
   {
     href: "/content/quality-policy",
     label: "Quality Policy",
