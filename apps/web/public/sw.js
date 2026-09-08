@@ -76,6 +76,11 @@ self.addEventListener('fetch', (event) => {
   // Ignore chrome-extension or other non-http(s) schemes
   if (!url.protocol.startsWith('http')) return;
 
+  // API requests → Network-only (never cache business or form data)
+  if (url.pathname.startsWith('/api/')) {
+    return; // Let the browser handle normally
+  }
+
   // 1. Navigation requests (HTML pages)
   if (request.mode === 'navigate') {
     event.respondWith(
