@@ -1,6 +1,6 @@
 "use client";
 
-import type { GalleryImageDTO, ProjectDTO } from "@rvcc/types";
+import type { GalleryImageDTO, ProjectDTO } from "@rvcc/schemas";
 import {
   ArrowRight,
   ChevronDown,

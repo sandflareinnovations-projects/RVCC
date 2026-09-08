@@ -1,4 +1,4 @@
-import type { GalleryImageDTO, ProjectDTO } from "@rvcc/types";
+import type { GalleryImageDTO, ProjectDTO } from "@rvcc/schemas";
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
