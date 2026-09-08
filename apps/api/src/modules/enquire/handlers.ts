@@ -1,4 +1,4 @@
-import { z } from "@rvcc/schemas";
+import { otpRequestSchema, otpVerifySchema, z } from "@rvcc/schemas";
 import type { Env } from "../../config/env";
 import { json } from "../../lib/http";
 import { hashPassword } from "../../lib/password";
@@ -20,14 +20,6 @@ import type { Currency, Prisma, RegistrationStatus } from "@prisma/client";
 const OTP_TTL_MS = 15 * 60 * 1000; // 15 minutes
 const OTP_MAX_PER_HOUR = 10;
 
-const otpRequestSchema = z.object({
-  email: z.string().email(),
-});
-
-const otpVerifySchema = z.object({
-  email: z.string().email(),
-  code: z.string().min(4).max(8),
-});
 
 const draftPatchSchema = z.object({
   step: z.string().optional(),
