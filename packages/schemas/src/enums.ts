@@ -59,7 +59,7 @@ export type QuoteStatusEnum = z.infer<typeof quoteStatusSchema>;
 /**
  * Procurement Domain Enums
  */
-export const procurementStatusSchema = z.enum([
+export const PROCUREMENT_STATUSES = [
   "DRAFT",
   "SUBMITTED",
   "PENDING",
@@ -67,11 +67,21 @@ export const procurementStatusSchema = z.enum([
   "APPROVED",
   "REJECTED",
   "REVISION_REQUESTED",
-]);
-export type ProcurementStatusEnum = z.infer<typeof procurementStatusSchema>;
+] as const;
+export const rawProcurementStatusSchema = z.enum(PROCUREMENT_STATUSES);
+export const procurementStatusSchema = z.preprocess(
+  (val) => (typeof val === "string" ? val.toUpperCase() : val),
+  rawProcurementStatusSchema
+);
+export type ProcurementStatusEnum = z.infer<typeof rawProcurementStatusSchema>;
 
-export const procurementPrioritySchema = z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]);
-export type ProcurementPriorityEnum = z.infer<typeof procurementPrioritySchema>;
+export const PROCUREMENT_PRIORITIES = ["LOW", "MEDIUM", "HIGH", "URGENT"] as const;
+export const rawProcurementPrioritySchema = z.enum(PROCUREMENT_PRIORITIES);
+export const procurementPrioritySchema = z.preprocess(
+  (val) => (typeof val === "string" ? val.toUpperCase() : val),
+  rawProcurementPrioritySchema
+);
+export type ProcurementPriorityEnum = z.infer<typeof rawProcurementPrioritySchema>;
 
 export const notificationTypeSchema = z.enum([
   "REQUIREMENT_POSTED",
