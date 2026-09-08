@@ -10,11 +10,12 @@
  */
 
 const CACHE_VERSION = 'v8';
-const SHELL_CACHE = `rvcc-admin-shell-${CACHE_VERSION}`;
-const RUNTIME_CACHE = `rvcc-admin-runtime-${CACHE_VERSION}`;
-const FONT_CACHE = `rvcc-admin-fonts-${CACHE_VERSION}`;
-const IMAGE_CACHE = `rvcc-admin-images-${CACHE_VERSION}`;
+const SHELL_CACHE = `rvcc-vendor-shell-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `rvcc-vendor-runtime-${CACHE_VERSION}`;
+const FONT_CACHE = `rvcc-vendor-fonts-${CACHE_VERSION}`;
+const IMAGE_CACHE = `rvcc-vendor-images-${CACHE_VERSION}`;
 const ALL_CACHES = [SHELL_CACHE, RUNTIME_CACHE, FONT_CACHE, IMAGE_CACHE];
+
 
 // Offline fallback only — manifest/icons are fetched network-first at runtime
 const PRECACHE_URLS = [
