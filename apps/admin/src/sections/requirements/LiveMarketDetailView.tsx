@@ -1,6 +1,6 @@
 "use client";
 
-import type { AdminLiveBidsPayload } from "@rvcc/types";
+import type { AdminLiveBidsPayload } from "@rvcc/schemas";
 import {
   ArrowUpDown,
   Calendar,
