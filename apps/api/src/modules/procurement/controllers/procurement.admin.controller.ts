@@ -24,7 +24,7 @@ export async function handleProcurementList(
   env: Env,
   request: Request
 ): Promise<Response> {
-  const auth = await requireAdmin(sql, env, request);
+  const auth = await requireAdmin(sql, env, request, "PROCUREMENT_ADMIN");
   if (auth.deny) return auth.deny;
 
   const url = new URL(request.url);
@@ -40,7 +40,7 @@ export async function handleProcurementGet(
   request: Request,
   id: string
 ): Promise<Response> {
-  const auth = await requireAdmin(sql, env, request);
+  const auth = await requireAdmin(sql, env, request, "PROCUREMENT_ADMIN");
   if (auth.deny) return auth.deny;
 
   const detail = await ProcurementService.loadPurchaseRequestDetail(id);
@@ -56,7 +56,7 @@ export async function handleProcurementCreate(
   env: Env,
   request: Request
 ): Promise<Response> {
-  const auth = await requireAdmin(sql, env, request);
+  const auth = await requireAdmin(sql, env, request, "PROCUREMENT_ADMIN");
   if (auth.deny) return auth.deny;
 
   const rawBody = await readJson(request);
@@ -94,7 +94,7 @@ export async function handleProcurementReview(
   request: Request,
   id: string
 ): Promise<Response> {
-  const auth = await requireAdmin(sql, env, request);
+  const auth = await requireAdmin(sql, env, request, "PROCUREMENT_ADMIN");
   if (auth.deny) return auth.deny;
 
   const rawBody = await readJson(request);
@@ -135,7 +135,7 @@ export async function handleProcurementDelete(
   request: Request,
   id: string
 ): Promise<Response> {
-  const auth = await requireAdmin(sql, env, request);
+  const auth = await requireAdmin(sql, env, request, "PROCUREMENT_ADMIN");
   if (auth.deny) return auth.deny;
 
   const deleted = await ProcurementService.deletePurchaseRequest(id);
