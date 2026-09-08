@@ -5,10 +5,10 @@ import { createApp } from "../../src/app";
 import { hashSha256 } from "../../src/lib/sql";
 import { hashPassword } from "../../src/lib/password";
 
-const env = loadEnv();
-const app = createApp(env);
+const hasDatabase = Boolean(process.env.DATABASE_URL?.trim());
 
-describe("QA Scenario 3: Auth Brute-Force Lockout, RBAC Escalation & Session Isolation E2E Test", () => {
+describe.skipIf(!hasDatabase)("QA Scenario 3: Auth Brute-Force Lockout, RBAC Escalation & Session Isolation E2E Test", () => {
+  let app: ReturnType<typeof createApp>;
   let superAdminId: string;
   let superAdminSessionToken: string;
 
@@ -22,6 +22,9 @@ describe("QA Scenario 3: Auth Brute-Force Lockout, RBAC Escalation & Session Iso
   const correctPassword = "VictimPassword123!";
 
   beforeAll(async () => {
+    const env = loadEnv();
+    app = createApp(env);
+
     // 1. Setup Victim Account for Brute-Force Simulation
     await prisma.adminUser.create({
       data: {

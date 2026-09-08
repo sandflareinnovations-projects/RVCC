@@ -5,16 +5,19 @@ import { createApp } from "../../src/app";
 import { hashSha256 } from "../../src/lib/sql";
 import { hashPassword } from "../../src/lib/password";
 
-const env = loadEnv();
-const app = createApp(env);
+const hasDatabase = Boolean(process.env.DATABASE_URL?.trim());
 
-describe("QA Scenario 2: Procurement Requisition, Item Calculations & Audit Trail E2E Test", () => {
+describe.skipIf(!hasDatabase)("QA Scenario 2: Procurement Requisition, Item Calculations & Audit Trail E2E Test", () => {
+  let app: ReturnType<typeof createApp>;
   let adminId: string;
   let adminSessionToken: string;
   let createdReqId: string;
   let referenceNumber: string;
 
   beforeAll(async () => {
+    const env = loadEnv();
+    app = createApp(env);
+
     adminId = `qa-proc-admin-${Date.now()}`;
     adminSessionToken = `qa-proc-token-${Date.now()}`;
     const tokenHash = await hashSha256(adminSessionToken);

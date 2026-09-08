@@ -3,10 +3,9 @@ import { prisma } from "../../src/lib/prisma";
 import { loadEnv } from "../../src/config/env";
 import { createApp } from "../../src/app";
 
-// Live database test suite using active database credentials from .env
-const env = loadEnv();
+const hasDatabase = Boolean(process.env.DATABASE_URL?.trim());
 
-describe("QA Live Database Integration Tests", () => {
+describe.skipIf(!hasDatabase)("QA Live Database Integration Tests", () => {
   it("should successfully connect to PostgreSQL and execute a health query", async () => {
     const start = Date.now();
     const result = await prisma.$queryRaw<[{ '?column?': number }]>`SELECT 1`;
@@ -32,7 +31,7 @@ describe("QA Live Database Integration Tests", () => {
   });
 
   it("should execute live /health endpoint and report database status as 'ok'", async () => {
-    const app = createApp(env);
+    const app = createApp(loadEnv());
     const res = await app.request("/health", {
       method: "GET",
     });

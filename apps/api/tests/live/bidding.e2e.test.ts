@@ -5,10 +5,10 @@ import { createApp } from "../../src/app";
 import { cuid, hashSha256 } from "../../src/lib/sql";
 import { hashPassword } from "../../src/lib/password";
 
-const env = loadEnv();
-const app = createApp(env);
+const hasDatabase = Boolean(process.env.DATABASE_URL?.trim());
 
-describe("QA Scenario 1: Live Bidding, Blind Masking & Concurrency E2E Test", () => {
+describe.skipIf(!hasDatabase)("QA Scenario 1: Live Bidding, Blind Masking & Concurrency E2E Test", () => {
+  let app: ReturnType<typeof createApp>;
   let requirementId: string;
   let adminId: string;
   let adminSessionToken: string;
@@ -20,6 +20,9 @@ describe("QA Scenario 1: Live Bidding, Blind Masking & Concurrency E2E Test", ()
   let vendorBSessionToken: string;
 
   beforeAll(async () => {
+    const env = loadEnv();
+    app = createApp(env);
+
     // 1. Setup Admin Account & Session
     adminId = `qa-admin-${Date.now()}`;
     adminSessionToken = `qa-admin-token-${Date.now()}`;
