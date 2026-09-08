@@ -1,3 +1,4 @@
+import { clientPartnerInputSchema } from "@rvcc/schemas";
 import type { Env } from "../../../config/env";
 import { corsHeaders, json } from "../../../lib/http";
 import { requireAdmin, writeAudit } from "../../auth";
@@ -45,12 +46,14 @@ export async function handleAdminClientCreate(
   const { admin, deny } = await requireAdmin(sql, env, request, "ADMIN");
   if (deny) return deny;
 
-  const raw = (await readJson(request)) as Record<string, unknown> | null;
-  if (!raw) return json(env, request, { error: "Invalid JSON body" }, 400);
+  const raw = await readJson(request);
+  const parsed = clientPartnerInputSchema.safeParse(raw);
+  if (!parsed.success) {
+    return json(env, request, { error: parsed.error.issues[0]?.message || "Invalid payload" }, 400);
+  }
 
-  const name = String(raw.name ?? "").trim();
-  const logoUrl = String(raw.logoUrl ?? "").trim();
-
+  const name = parsed.data.name.trim();
+  const logoUrl = parsed.data.logoUrl.trim();
   if (!name || !logoUrl) {
     return json(env, request, { error: "name and logoUrl are required." }, 400);
   }
@@ -58,10 +61,10 @@ export async function handleAdminClientCreate(
   const client = await ClientsService.createClient({
     name,
     logoUrl,
-    industry: String(raw.industry ?? "").trim(),
-    websiteUrl: raw.websiteUrl ? String(raw.websiteUrl).trim() : undefined,
-    sortOrder: typeof raw.sortOrder === "number" ? raw.sortOrder : undefined,
-    isActive: typeof raw.isActive === "boolean" ? raw.isActive : undefined,
+    industry: (parsed.data.industry ?? "").trim(),
+    websiteUrl: parsed.data.websiteUrl ? parsed.data.websiteUrl.trim() : undefined,
+    sortOrder: parsed.data.sortOrder,
+    isActive: parsed.data.isActive,
   });
 
   await writeAudit(sql, {
@@ -84,19 +87,22 @@ export async function handleAdminClientUpdate(
   const { admin, deny } = await requireAdmin(sql, env, request, "ADMIN");
   if (deny) return deny;
 
-  const raw = (await readJson(request)) as Record<string, unknown> | null;
-  if (!raw) return json(env, request, { error: "Invalid JSON body" }, 400);
+  const raw = await readJson(request);
+  const parsed = clientPartnerInputSchema.partial().safeParse(raw);
+  if (!parsed.success) {
+    return json(env, request, { error: parsed.error.issues[0]?.message || "Invalid payload" }, 400);
+  }
 
   const existing = await ClientsService.getClientById(id);
   if (!existing) return json(env, request, { error: "Client not found." }, 404);
 
   const data: Record<string, unknown> = {};
-  if (raw.name !== undefined) data.name = String(raw.name).trim();
-  if (raw.logoUrl !== undefined) data.logoUrl = String(raw.logoUrl).trim();
-  if (raw.industry !== undefined) data.industry = String(raw.industry).trim();
-  if (raw.websiteUrl !== undefined) data.websiteUrl = raw.websiteUrl ? String(raw.websiteUrl).trim() : null;
-  if (typeof raw.sortOrder === "number") data.sortOrder = raw.sortOrder;
-  if (typeof raw.isActive === "boolean") data.isActive = raw.isActive;
+  if (parsed.data.name !== undefined) data.name = parsed.data.name.trim();
+  if (parsed.data.logoUrl !== undefined) data.logoUrl = parsed.data.logoUrl.trim();
+  if (parsed.data.industry !== undefined) data.industry = parsed.data.industry.trim();
+  if (parsed.data.websiteUrl !== undefined) data.websiteUrl = parsed.data.websiteUrl ? parsed.data.websiteUrl.trim() : null;
+  if (parsed.data.sortOrder !== undefined) data.sortOrder = parsed.data.sortOrder;
+  if (parsed.data.isActive !== undefined) data.isActive = parsed.data.isActive;
 
   const client = await ClientsService.updateClient(id, data);
 
