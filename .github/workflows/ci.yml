@@ -22,7 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      # Prisma validate & generate only need a syntactically valid URL (no real connection).
+      # Live E2E tests are excluded from CI (see apps/api/vitest.config.ts).
+      DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/rvcc' }}
 
     steps:
       - name: Checkout Code
