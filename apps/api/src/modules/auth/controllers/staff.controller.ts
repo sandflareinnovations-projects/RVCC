@@ -53,7 +53,7 @@ export class StaffController {
     env: Env,
     request: Request
   ): Promise<Response> {
-    const auth = await requireAdmin(sql, env, request);
+    const auth = await requireAdmin(sql, env, request, "SUPER_ADMIN");
     if (auth.deny) return auth.deny;
 
     let body: any;
@@ -96,7 +96,7 @@ export class StaffController {
     request: Request,
     id: string
   ): Promise<Response> {
-    const auth = await requireAdmin(sql, env, request);
+    const auth = await requireAdmin(sql, env, request, "SUPER_ADMIN");
     if (auth.deny) return auth.deny;
 
     let body: any;
@@ -111,7 +111,7 @@ export class StaffController {
       return json(env, request, { error: res.error }, res.status || 400);
     }
 
-    return json(env, request, { success: true });
+    return json(env, request, { success: true, staff: res.staff });
   }
 
   static async handleStaffPasswordReset(
@@ -120,7 +120,7 @@ export class StaffController {
     request: Request,
     id: string
   ): Promise<Response> {
-    const auth = await requireAdmin(sql, env, request);
+    const auth = await requireAdmin(sql, env, request, "SUPER_ADMIN");
     if (auth.deny) return auth.deny;
 
     let body: any;
@@ -152,7 +152,7 @@ export class StaffController {
     request: Request,
     id: string
   ): Promise<Response> {
-    const auth = await requireAdmin(sql, env, request);
+    const auth = await requireAdmin(sql, env, request, "SUPER_ADMIN");
     if (auth.deny) return auth.deny;
 
     let body: any;
