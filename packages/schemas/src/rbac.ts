@@ -44,3 +44,38 @@ export const updateStaffMemberSchema = z.object({
   isActive: z.boolean().optional(),
 });
 export type UpdateStaffMemberInput = z.infer<typeof updateStaffMemberSchema>;
+
+/**
+ * RBAC Role Hierarchy & Helper Functions
+ */
+export type AdminRoleName = z.infer<typeof adminRoleNameSchema>;
+
+export const ROLE_RANK: Record<AdminRoleName, number> = {
+  REVIEWER: 1,
+  WEBSITE_ADMIN: 2,
+  VENDOR_ADMIN: 2,
+  PROCUREMENT_ADMIN: 2,
+  ADMIN: 3,
+  SUPER_ADMIN: 4,
+};
+
+export function canManageStaff(role: AdminRoleName): boolean {
+  return role === "SUPER_ADMIN";
+}
+
+export function canManageVendors(role: AdminRoleName): boolean {
+  return role === "SUPER_ADMIN" || role === "ADMIN" || role === "VENDOR_ADMIN";
+}
+
+export function canManageProcurement(role: AdminRoleName): boolean {
+  return role === "SUPER_ADMIN" || role === "ADMIN" || role === "PROCUREMENT_ADMIN";
+}
+
+export function canManageWebsite(role: AdminRoleName): boolean {
+  return role === "SUPER_ADMIN" || role === "ADMIN" || role === "WEBSITE_ADMIN";
+}
+
+export function hasRole(role: AdminRoleName, minimum: AdminRoleName): boolean {
+  return ROLE_RANK[role] >= ROLE_RANK[minimum];
+}
+
