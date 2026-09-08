@@ -111,7 +111,7 @@ export class StaffController {
       return json(env, request, { error: res.error }, res.status || 400);
     }
 
-    return json(env, request, { success: true, staff: res.staff });
+    return json(env, request, { success: true });
   }
 
   static async handleStaffPasswordReset(
