@@ -1,6 +1,6 @@
 "use client";
 
-import type { VendorLiveBidsPayload } from "@rvcc/types";
+import type { VendorLiveBidsPayload } from "@rvcc/schemas";
 import {
   ShieldCheck,
   Trophy,

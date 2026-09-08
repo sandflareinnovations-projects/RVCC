@@ -1,6 +1,6 @@
 "use client";
 
-import type { VendorLiveBidsPayload } from "@rvcc/types";
+import type { VendorLiveBidsPayload } from "@rvcc/schemas";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export function useVendorLiveBidding(
