@@ -11,6 +11,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@rvcc/schemas": "workspace:*"
+  },
   "devDependencies": {
     "typescript": "^5.8.3"
   }
