@@ -1,4 +1,5 @@
-export type DocumentCategory = "Profile" | "Standard" | "Report" | "Catalog";
+import type { DocumentCategory } from "@rvcc/schemas";
+export type { DocumentCategory };
 
 export interface DocumentItem {
   id: string;
