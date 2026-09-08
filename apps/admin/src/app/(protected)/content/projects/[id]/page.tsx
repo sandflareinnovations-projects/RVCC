@@ -1,4 +1,4 @@
-import type { ProjectDTO } from "@rvcc/types";
+import type { ProjectDTO } from "@rvcc/schemas";
 import { notFound } from "next/navigation";
 
 import { adminSessionJson } from "@/lib/admin-data";

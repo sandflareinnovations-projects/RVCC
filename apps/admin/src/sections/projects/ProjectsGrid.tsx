@@ -1,6 +1,6 @@
 "use client";
 
-import type { ProjectDTO } from "@rvcc/types";
+import type { ProjectDTO } from "@rvcc/schemas";
 import {
   Check,
   ChevronLeft,

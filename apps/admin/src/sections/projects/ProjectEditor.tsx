@@ -1,6 +1,6 @@
 "use client";
 
-import type { GalleryImageDTO, ProjectDTO, ProjectInput, ProjectStatus } from "@rvcc/types";
+import type { GalleryImageDTO, ProjectDTO, ProjectInput, ProjectStatus } from "@rvcc/schemas";
 import {
   AlertCircle,
   Check,
