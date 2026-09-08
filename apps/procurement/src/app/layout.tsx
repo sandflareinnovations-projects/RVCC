@@ -45,8 +45,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={adminSans.variable}>
-      <body className="font-enquire min-h-screen bg-zinc-50 text-zinc-900 antialiased selection:bg-[#0073bc] selection:text-white">
+    <html lang="en" className={adminSans.variable} suppressHydrationWarning>
+      <body
+        suppressHydrationWarning
+        className="font-enquire min-h-screen bg-zinc-50 text-zinc-900 antialiased selection:bg-[#0073bc] selection:text-white"
+      >
         <PwaUpdateBanner />
         {children}
         <ServiceWorkerRegistrar />
