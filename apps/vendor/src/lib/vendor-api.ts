@@ -5,6 +5,7 @@ function vendorBaseUrl(): string {
   const base = (
     process.env.API_URL ||
     process.env.VENDOR_API_URL ||
+    process.env.NEXT_PUBLIC_API_URL ||
     "http://localhost:4000"
   )?.replace(/\/$/, "");
   return `${base}/vendor`;
@@ -47,7 +48,9 @@ export async function vendorApiFetch(
 }
 
 export function apiConfigured(): boolean {
-  return Boolean(process.env.API_URL || process.env.VENDOR_API_URL);
+  return Boolean(
+    process.env.API_URL || process.env.VENDOR_API_URL || process.env.NEXT_PUBLIC_API_URL
+  );
 }
 
 /** @deprecated Use vendorApiFetch */
