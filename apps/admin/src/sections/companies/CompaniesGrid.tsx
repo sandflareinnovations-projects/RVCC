@@ -1,6 +1,6 @@
 "use client";
 
-import type { SisterCompanyDTO } from "@rvcc/types";
+import type { SisterCompanyDTO } from "@rvcc/schemas";
 import {
   Building2,
   Check,

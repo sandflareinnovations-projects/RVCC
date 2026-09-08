@@ -1,4 +1,4 @@
-import type { SisterCompanyDTO } from "@rvcc/types";
+import type { SisterCompanyDTO } from "@rvcc/schemas";
 import { Suspense } from "react";
 
 import { adminSessionJson } from "@/lib/admin-data";
