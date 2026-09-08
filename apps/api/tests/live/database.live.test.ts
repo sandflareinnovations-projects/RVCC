@@ -3,9 +3,15 @@ import { prisma } from "../../src/lib/prisma";
 import { loadEnv } from "../../src/config/env";
 import { createApp } from "../../src/app";
 
-const hasDatabase = Boolean(process.env.DATABASE_URL?.trim());
+/**
+ * Live database integration tests.
+ * These tests require a real PostgreSQL connection (DATABASE_URL in .env).
+ * Run via: pnpm --filter api test:live
+ * Excluded from CI by default (vitest.config.ts excludes tests/live/**)
+ */
+const env = loadEnv();
 
-describe.skipIf(!hasDatabase)("QA Live Database Integration Tests", () => {
+describe("QA Live Database Integration Tests", () => {
   it("should successfully connect to PostgreSQL and execute a health query", async () => {
     const start = Date.now();
     const result = await prisma.$queryRaw<[{ '?column?': number }]>`SELECT 1`;
@@ -31,7 +37,7 @@ describe.skipIf(!hasDatabase)("QA Live Database Integration Tests", () => {
   });
 
   it("should execute live /health endpoint and report database status as 'ok'", async () => {
-    const app = createApp(loadEnv());
+    const app = createApp(env);
     const res = await app.request("/health", {
       method: "GET",
     });

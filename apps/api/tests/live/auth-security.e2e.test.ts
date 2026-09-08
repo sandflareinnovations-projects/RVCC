@@ -5,10 +5,14 @@ import { createApp } from "../../src/app";
 import { hashSha256 } from "../../src/lib/sql";
 import { hashPassword } from "../../src/lib/password";
 
-const hasDatabase = Boolean(process.env.DATABASE_URL?.trim());
+/**
+ * Live E2E tests — requires DATABASE_URL. Run via: pnpm test:live
+ * Excluded from CI by vitest.config.ts (see tests/live/** exclude).
+ */
+const env = loadEnv();
+const app = createApp(env);
 
-describe.skipIf(!hasDatabase)("QA Scenario 3: Auth Brute-Force Lockout, RBAC Escalation & Session Isolation E2E Test", () => {
-  let app: ReturnType<typeof createApp>;
+describe("QA Scenario 3: Auth Brute-Force Lockout, RBAC Escalation & Session Isolation E2E Test", () => {
   let superAdminId: string;
   let superAdminSessionToken: string;
 
@@ -22,9 +26,6 @@ describe.skipIf(!hasDatabase)("QA Scenario 3: Auth Brute-Force Lockout, RBAC Esc
   const correctPassword = "VictimPassword123!";
 
   beforeAll(async () => {
-    const env = loadEnv();
-    app = createApp(env);
-
     // 1. Setup Victim Account for Brute-Force Simulation
     await prisma.adminUser.create({
       data: {

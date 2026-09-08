@@ -5,19 +5,20 @@ import { createApp } from "../../src/app";
 import { hashSha256 } from "../../src/lib/sql";
 import { hashPassword } from "../../src/lib/password";
 
-const hasDatabase = Boolean(process.env.DATABASE_URL?.trim());
+/**
+ * Live E2E tests — requires DATABASE_URL. Run via: pnpm test:live
+ * Excluded from CI by vitest.config.ts (see tests/live/** exclude).
+ */
+const env = loadEnv();
+const app = createApp(env);
 
-describe.skipIf(!hasDatabase)("QA Scenario 2: Procurement Requisition, Item Calculations & Audit Trail E2E Test", () => {
-  let app: ReturnType<typeof createApp>;
+describe("QA Scenario 2: Procurement Requisition, Item Calculations & Audit Trail E2E Test", () => {
   let adminId: string;
   let adminSessionToken: string;
   let createdReqId: string;
   let referenceNumber: string;
 
   beforeAll(async () => {
-    const env = loadEnv();
-    app = createApp(env);
-
     adminId = `qa-proc-admin-${Date.now()}`;
     adminSessionToken = `qa-proc-token-${Date.now()}`;
     const tokenHash = await hashSha256(adminSessionToken);
