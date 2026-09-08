@@ -1,4 +1,4 @@
-import type { HeroSlideDTO } from "@rvcc/types";
+import type { HeroSlideDTO } from "@rvcc/schemas";
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";

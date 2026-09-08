@@ -1,6 +1,6 @@
 "use client";
 
-import type { HeroSlideDTO, HeroSlideInput } from "@rvcc/types";
+import type { HeroSlideDTO, HeroSlideInput } from "@rvcc/schemas";
 import { AlertCircle, ChevronLeft, Loader2, Trash2, UploadCloud } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

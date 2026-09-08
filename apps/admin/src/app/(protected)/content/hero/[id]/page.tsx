@@ -1,4 +1,4 @@
-import type { HeroSlideDTO } from "@rvcc/types";
+import type { HeroSlideDTO } from "@rvcc/schemas";
 import { notFound } from "next/navigation";
 
 import { adminSessionJson } from "@/lib/admin-data";
