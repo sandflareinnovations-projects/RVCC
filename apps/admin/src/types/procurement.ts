@@ -1,7 +1,5 @@
 import type {
-  ProcurementPriorityClientEnum,
   ProcurementStatsDTO,
-  ProcurementStatusClientEnum,
   PurchaseRequestAttachmentDTO,
   PurchaseRequestAuditDTO,
   PurchaseRequestDetailDTO,
@@ -9,8 +7,15 @@ import type {
   PurchaseRequestListItemDTO,
 } from "@rvcc/schemas";
 
-export type RequestStatus = ProcurementStatusClientEnum;
-export type PriorityLevel = ProcurementPriorityClientEnum;
+export type RequestStatus =
+  | "draft"
+  | "submitted"
+  | "under_review"
+  | "approved"
+  | "rejected"
+  | "revision_requested";
+
+export type PriorityLevel = "low" | "medium" | "high" | "urgent";
 
 export type RequestItem = PurchaseRequestItemDTO;
 export type Attachment = PurchaseRequestAttachmentDTO;
@@ -27,13 +32,12 @@ export type PurchaseRequest = Omit<PurchaseRequestDetailDTO, "priority" | "statu
 export type ProcurementStats = ProcurementStatsDTO;
 
 export type {
-  ProcurementPriorityClientEnum,
   ProcurementStatsDTO,
-  ProcurementStatusClientEnum,
   PurchaseRequestAttachmentDTO,
   PurchaseRequestAuditDTO,
   PurchaseRequestDetailDTO,
   PurchaseRequestItemDTO,
   PurchaseRequestListItemDTO,
 };
+
 
