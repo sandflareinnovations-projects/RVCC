@@ -1,7 +1,7 @@
-import { z } from "@rvcc/schemas";
+import { documentCategorySchema, type DocumentCategory, z } from "@rvcc/schemas";
 
-export const documentCategoryEnum = z.enum(["Profile", "Standard", "Report", "Catalog"]);
-export type DocumentCategory = z.infer<typeof documentCategoryEnum>;
+export const documentCategoryEnum = documentCategorySchema;
+export type { DocumentCategory };
 
 export const createDocumentSchema = z.object({
   title: z.string().min(1, "Document title is required."),
