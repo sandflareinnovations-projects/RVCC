@@ -4,7 +4,7 @@ import type {
   AdminQuoteRankingItem,
   VendorAnonymizedBidItem,
   VendorLiveBidsPayload,
-} from "@rvcc/types";
+} from "@rvcc/schemas";
 
 /**
  * Calculates dense price rankings for all submitted quotes on a requirement.
