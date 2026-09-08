@@ -1,3 +1,4 @@
+import { heroSlideInputSchema } from "@rvcc/schemas";
 import type { Env } from "../../../config/env";
 import { corsHeaders, json } from "../../../lib/http";
 import { requireAdmin, writeAudit } from "../../auth";
@@ -45,29 +46,24 @@ export async function handleAdminHeroSlideCreate(
   const { admin, deny } = await requireAdmin(sql, env, request, "ADMIN");
   if (deny) return deny;
 
-  const raw = (await readJson(request)) as Record<string, unknown> | null;
-  if (!raw) return json(env, request, { error: "Invalid JSON body" }, 400);
-
-  const title1 = String(raw.title1 ?? "").trim();
-  const title2 = String(raw.title2 ?? "").trim();
-  const imageUrl = String(raw.imageUrl ?? "").trim();
-
-  if (!title1 || !title2 || !imageUrl) {
-    return json(env, request, { error: "title1, title2, and imageUrl are required." }, 400);
+  const raw = await readJson(request);
+  const parsed = heroSlideInputSchema.safeParse(raw);
+  if (!parsed.success) {
+    return json(env, request, { error: parsed.error.issues[0]?.message || "Invalid payload" }, 400);
   }
 
   const slide = await HeroService.createSlide({
-    title1,
-    title2,
-    imageUrl,
-    description: String(raw.description ?? "").trim(),
-    badge: String(raw.badge ?? "").trim(),
-    primaryBtnText: raw.primaryBtnText ? String(raw.primaryBtnText).trim() : undefined,
-    primaryBtnLink: raw.primaryBtnLink ? String(raw.primaryBtnLink).trim() : undefined,
-    secondaryBtnText: raw.secondaryBtnText ? String(raw.secondaryBtnText).trim() : undefined,
-    secondaryBtnLink: raw.secondaryBtnLink ? String(raw.secondaryBtnLink).trim() : undefined,
-    sortOrder: typeof raw.sortOrder === "number" ? raw.sortOrder : undefined,
-    isActive: typeof raw.isActive === "boolean" ? raw.isActive : undefined,
+    title1: parsed.data.title1.trim(),
+    title2: parsed.data.title2.trim(),
+    imageUrl: parsed.data.imageUrl.trim(),
+    description: (parsed.data.description ?? "").trim(),
+    badge: (parsed.data.badge ?? "").trim(),
+    primaryBtnText: parsed.data.primaryBtnText ? parsed.data.primaryBtnText.trim() : undefined,
+    primaryBtnLink: parsed.data.primaryBtnLink ? parsed.data.primaryBtnLink.trim() : undefined,
+    secondaryBtnText: parsed.data.secondaryBtnText ? parsed.data.secondaryBtnText.trim() : undefined,
+    secondaryBtnLink: parsed.data.secondaryBtnLink ? parsed.data.secondaryBtnLink.trim() : undefined,
+    sortOrder: parsed.data.sortOrder,
+    isActive: parsed.data.isActive,
   });
 
   await writeAudit(sql, {
@@ -75,7 +71,7 @@ export async function handleAdminHeroSlideCreate(
     action: "hero_slides.created",
     entityType: "HeroSlide",
     entityId: slide.id,
-    metadata: { title1, title2 },
+    metadata: { title1: slide.title1, title2: slide.title2 },
   });
 
   return json(env, request, { ok: true, slide }, 201);
@@ -90,24 +86,27 @@ export async function handleAdminHeroSlideUpdate(
   const { admin, deny } = await requireAdmin(sql, env, request, "ADMIN");
   if (deny) return deny;
 
-  const raw = (await readJson(request)) as Record<string, unknown> | null;
-  if (!raw) return json(env, request, { error: "Invalid JSON body" }, 400);
+  const raw = await readJson(request);
+  const parsed = heroSlideInputSchema.partial().safeParse(raw);
+  if (!parsed.success) {
+    return json(env, request, { error: parsed.error.issues[0]?.message || "Invalid payload" }, 400);
+  }
 
   const existing = await HeroService.getSlideById(id);
   if (!existing) return json(env, request, { error: "Slide not found." }, 404);
 
   const data: Record<string, unknown> = {};
-  if (raw.title1 !== undefined) data.title1 = String(raw.title1).trim();
-  if (raw.title2 !== undefined) data.title2 = String(raw.title2).trim();
-  if (raw.imageUrl !== undefined) data.imageUrl = String(raw.imageUrl).trim();
-  if (raw.description !== undefined) data.description = String(raw.description).trim();
-  if (raw.badge !== undefined) data.badge = String(raw.badge).trim();
-  if (raw.primaryBtnText !== undefined) data.primaryBtnText = raw.primaryBtnText ? String(raw.primaryBtnText).trim() : null;
-  if (raw.primaryBtnLink !== undefined) data.primaryBtnLink = raw.primaryBtnLink ? String(raw.primaryBtnLink).trim() : null;
-  if (raw.secondaryBtnText !== undefined) data.secondaryBtnText = raw.secondaryBtnText ? String(raw.secondaryBtnText).trim() : null;
-  if (raw.secondaryBtnLink !== undefined) data.secondaryBtnLink = raw.secondaryBtnLink ? String(raw.secondaryBtnLink).trim() : null;
-  if (typeof raw.sortOrder === "number") data.sortOrder = raw.sortOrder;
-  if (typeof raw.isActive === "boolean") data.isActive = raw.isActive;
+  if (parsed.data.title1 !== undefined) data.title1 = parsed.data.title1.trim();
+  if (parsed.data.title2 !== undefined) data.title2 = parsed.data.title2.trim();
+  if (parsed.data.imageUrl !== undefined) data.imageUrl = parsed.data.imageUrl.trim();
+  if (parsed.data.description !== undefined) data.description = parsed.data.description.trim();
+  if (parsed.data.badge !== undefined) data.badge = parsed.data.badge.trim();
+  if (parsed.data.primaryBtnText !== undefined) data.primaryBtnText = parsed.data.primaryBtnText ? parsed.data.primaryBtnText.trim() : null;
+  if (parsed.data.primaryBtnLink !== undefined) data.primaryBtnLink = parsed.data.primaryBtnLink ? parsed.data.primaryBtnLink.trim() : null;
+  if (parsed.data.secondaryBtnText !== undefined) data.secondaryBtnText = parsed.data.secondaryBtnText ? parsed.data.secondaryBtnText.trim() : null;
+  if (parsed.data.secondaryBtnLink !== undefined) data.secondaryBtnLink = parsed.data.secondaryBtnLink ? parsed.data.secondaryBtnLink.trim() : null;
+  if (parsed.data.sortOrder !== undefined) data.sortOrder = parsed.data.sortOrder;
+  if (parsed.data.isActive !== undefined) data.isActive = parsed.data.isActive;
 
   const slide = await HeroService.updateSlide(id, data);
 
