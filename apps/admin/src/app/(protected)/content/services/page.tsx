@@ -1,4 +1,4 @@
-import type { ServiceDTO } from "@rvcc/types";
+import type { ServiceDTO } from "@rvcc/schemas";
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";

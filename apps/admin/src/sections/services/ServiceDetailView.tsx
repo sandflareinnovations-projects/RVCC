@@ -1,6 +1,6 @@
 "use client";
 
-import type { GalleryImageDTO, ServiceDTO } from "@rvcc/types";
+import type { GalleryImageDTO, ServiceDTO } from "@rvcc/schemas";
 import {
   AlertCircle,
   Check,

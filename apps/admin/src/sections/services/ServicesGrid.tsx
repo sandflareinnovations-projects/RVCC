@@ -1,6 +1,6 @@
 "use client";
 
-import type { ServiceDTO } from "@rvcc/types";
+import type { ServiceDTO } from "@rvcc/schemas";
 import {
   AlertCircle,
   ArrowRight,

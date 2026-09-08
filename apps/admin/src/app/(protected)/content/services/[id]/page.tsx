@@ -1,4 +1,4 @@
-import type { ServiceDTO } from "@rvcc/types";
+import type { ServiceDTO } from "@rvcc/schemas";
 import { notFound } from "next/navigation";
 
 import { adminSessionJson } from "@/lib/admin-data";
