@@ -1,4 +1,4 @@
-import type { ClientPartnerDTO } from "@rvcc/types";
+import type { ClientPartnerDTO } from "@rvcc/schemas";
 import { Suspense } from "react";
 
 import { adminSessionJson } from "@/lib/admin-data";

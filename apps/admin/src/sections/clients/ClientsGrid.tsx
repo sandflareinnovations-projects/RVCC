@@ -1,6 +1,6 @@
 "use client";
 
-import type { ClientPartnerDTO } from "@rvcc/types";
+import type { ClientPartnerDTO } from "@rvcc/schemas";
 import { Check, ChevronLeft, ExternalLink, GripVertical, Loader2, Pencil, Plus, Search, Trash2, UserCheck, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ClientPartnerDTO, ClientPartnerInput } from "@rvcc/types";
+import type { ClientPartnerDTO, ClientPartnerInput } from "@rvcc/schemas";
 import { AlertCircle, Check, Loader2, UploadCloud } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
