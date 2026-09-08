@@ -1,6 +1,6 @@
 "use client";
 
-import type { CompanyDocumentDTO, DocumentCategory } from "@rvcc/types";
+import type { CompanyDocumentDTO, DocumentCategory } from "@rvcc/schemas";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   AlertCircle,

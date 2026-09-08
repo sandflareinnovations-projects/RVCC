@@ -1,4 +1,4 @@
-import type { CompanyDocumentDTO } from "@rvcc/types";
+import type { CompanyDocumentDTO } from "@rvcc/schemas";
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
