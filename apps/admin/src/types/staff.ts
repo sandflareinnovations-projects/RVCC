@@ -1,5 +1,6 @@
-export type AdminRoleName =
-  "SUPER_ADMIN" | "ADMIN" | "PROCUREMENT_ADMIN" | "VENDOR_ADMIN" | "WEBSITE_ADMIN" | "REVIEWER";
+import type { AdminRoleNameEnum } from "@rvcc/schemas";
+
+export type AdminRoleName = AdminRoleNameEnum;
 
 export interface StaffMember {
   id: string;
